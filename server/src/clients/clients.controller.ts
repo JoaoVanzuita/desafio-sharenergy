@@ -28,7 +28,7 @@ export class ClientsController {
     return this.clientsService.update(id, updateClientDto)
   }
 
-  @Delete(':id'
+  @Delete(':id')
   delete(@Param('id') id: string) {
     this.clientsService.delete(id)
   }
