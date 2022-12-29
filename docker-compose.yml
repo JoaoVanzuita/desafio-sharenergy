@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  sharenergy_client:
+    container_name: sharenergy_client
+    image: node:lts
+    volumes:
+      - ./client:/app
+    working_dir: /app
+    command: >
+      sh -c "npm i && npm run start:dev"
+    ports:
+      - '5173:5173'
+  sharenergy_server:
+    container_name: sharenergy_server
+    image: node:lts
+    volumes:
+      - ./server:/app
+    working_dir: /app
+    command: >
+      sh -c "npm i && npm run start:dev"
+    ports:
+      - '8080:8080'
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+    depends_on:
+      - sharenergy_db
+  sharenergy_db:
+    container_name: sharenergy_db
+    image: mongo
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - '27017:27017'
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${ROOT_PASSWORD}
+      - MONGO_INITDB_DATABASE=${DATABASE}
+volumes:
+  mongo-data: {}
