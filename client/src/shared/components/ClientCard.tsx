@@ -7,6 +7,7 @@ type TClientCardProps = {
 
 export const ClientCard: React.FC<TClientCardProps> = ({selectedClient}) => {
   const theme = useTheme()
+  const mobile = useMediaQuery(theme.breakpoints.down(450))
   const smDown = useMediaQuery(theme.breakpoints.down('sm'))
   const mdDown = useMediaQuery(theme.breakpoints.down('md'))
 
@@ -16,7 +17,9 @@ export const ClientCard: React.FC<TClientCardProps> = ({selectedClient}) => {
         gap={smDown ? 1 : 2}
         padding={smDown ? 1 : 2}
       >
-        <Box display='flex' flexDirection='column'>
+        <Box display='flex' flexDirection='column'
+          maxWidth={mobile ? 150 : mdDown ? 200 : 250}
+        >
 
           <Typography alignSelf='center' paddingBottom={2}
             variant={mdDown ? 'h6' : 'h5'}
@@ -55,7 +58,9 @@ export const ClientCard: React.FC<TClientCardProps> = ({selectedClient}) => {
 
         <Divider orientation='vertical' flexItem />
 
-        <Box display='flex' flexDirection='column'>
+        <Box display='flex' flexDirection='column'
+          maxWidth={mobile ? 150 : mdDown ? 200 : 250}
+        >
           <Typography alignSelf='center' paddingBottom={2}
             variant={mdDown ? 'h6' : 'h5'}
           >

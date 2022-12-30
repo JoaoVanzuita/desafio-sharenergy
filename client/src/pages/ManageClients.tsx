@@ -11,8 +11,8 @@ import { TClient } from '../shared/types'
 export const ManageClients = () => {
   const theme = useTheme()
   const smDown = useMediaQuery(theme.breakpoints.down('sm'))
-  const mdDown = useMediaQuery(theme.breakpoints.down('md'))
-  const lgDown = useMediaQuery(theme.breakpoints.down(700))
+  const mdDown = useMediaQuery(theme.breakpoints.down(700))
+  const hdDown = useMediaQuery(theme.breakpoints.down(1280))
   const alertBackground = theme.palette.background.default
   const alertColor = theme.palette.mode === 'light' ? '#000000' : '#ffffff'
   const navigate = useNavigate()
@@ -88,6 +88,7 @@ export const ManageClients = () => {
 
       if(result.isConfirmed){
 
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const result = await clientsApi.deleteClient(selectedClient._id!)
 
         if(result instanceof Error){
@@ -120,18 +121,24 @@ export const ManageClients = () => {
     }
     >
       {isLoading && <Box display='flex' justifyContent='center' alignItems='center'>
-
         <CircularProgress/>
       </Box>}
 
-      <Box display='flex' flexDirection={lgDown ? 'column' : 'row'}
-        gap={mdDown ? 1 : 5}
+      {!isLoading && clients.length == 0 && <Box display='flex' justifyContent='center' alignItems='center'>
+
+        <Typography variant={smDown ? 'h6' : 'h5'}>
+          Nenhum cliente encontrado
+        </Typography>
+      </Box>}
+
+      <Box display='flex' flexDirection={mdDown ? 'column' : 'row'}
+        gap={hdDown ? 1 : 5}
         padding={1}
         alignContent='center'
       >
 
-        {!isLoading && <>
-          <Box padding={smDown ? 2 : 5} display='flex' flexDirection='column' alignItems='center' order={lgDown ? 2 : 1}>
+        {!isLoading && clients.length > 0 && <>
+          <Box padding={smDown ? 2 : 5} display='flex' flexDirection='column' alignItems='center' order={mdDown ? 2 : 1}>
             <Typography variant={smDown ? 'h5' : 'h4'} paddingBottom={3}>
             Clientes
             </Typography>
@@ -152,7 +159,7 @@ export const ManageClients = () => {
             </List>
 
           </Box>
-          <Box display='flex' justifyContent='center' alignItems='center' flexDirection='column' order={lgDown ? 1 : 2}>
+          <Box display='flex' justifyContent='center' alignItems='center' flexDirection='column' order={mdDown ? 1 : 2}>
 
             {selectedClient && <Typography paddingBottom={3}
               variant={smDown ? 'h6' : 'h5'}>

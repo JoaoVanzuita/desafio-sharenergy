@@ -1,5 +1,6 @@
 import { Box, CircularProgress, List, Pagination, Paper, Typography, useMediaQuery, useTheme} from '@mui/material'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { Toolbar } from '../shared/components'
 import { UserListItem } from '../shared/components/UserListItem'
 import { showApiErrorAlert } from '../shared/functions'
@@ -11,12 +12,26 @@ export const RandomUsers = () => {
   const theme = useTheme()
   const alertBackground = theme.palette.background.default
   const alertColor = theme.palette.mode === 'light' ? '#000000' : '#ffffff'
-  const smDown = useMediaQuery(theme.breakpoints.down('sm'))
+  const hdDown = useMediaQuery(theme.breakpoints.down(1366))
 
   const [isLoading, setIsLoading] = useState(true)
   const [users, setUsers] = useState<TRandomUser[]>([])
-  const [page, setPage] = useState(1)
+  const [searchParams, setSearchParams] = useSearchParams()
   const [search, setSearch] = useState('')
+
+  useEffect(() => {
+    searchParams.set('page', '1')
+    searchParams.set('limit', hdDown ? '4' : '6')
+    setSearchParams(searchParams)
+  }, [])
+
+  const page = useMemo(() => {
+    return searchParams.get('page') || '10'
+  }, [searchParams])
+
+  const limit = useMemo(() => {
+    return searchParams.get('limit') || '1'
+  },[searchParams])
 
   const filteredUsers: TRandomUser[] = search.length > 0
     ? users.filter(user => {
@@ -29,9 +44,9 @@ export const RandomUsers = () => {
     })
     : users
 
-  const fetchUsers = useCallback(async(page: number) => {
-    const pageLimit = smDown ? 4 : 6
-    const result = await randomUsersApi.getRandomUsers(page, pageLimit)
+  const fetchUsers = useCallback(async(page: number, limit: number) => {
+
+    const result = await randomUsersApi.getRandomUsers(page, limit)
 
     setIsLoading(false)
 
@@ -44,8 +59,8 @@ export const RandomUsers = () => {
   },[])
 
   useEffect(() => {
-    fetchUsers(page)
-  },[page])
+    fetchUsers(Number(page), Number(limit))
+  },[page, limit])
 
   return(
     <BasePageLayout title='Random users' toolbar={<Toolbar
@@ -65,10 +80,12 @@ export const RandomUsers = () => {
           })}
         </List>
 
-        {!isLoading && filteredUsers.length > 0 && <Pagination page={page} onChange={(ev, newPage) => {
-          setPage(newPage)
-          setSearch('')
-        }} count={100}/>}
+        {!isLoading && filteredUsers.length > 0 && <Pagination page={Number(page)}
+          onChange={(ev, newPage) => {
+            searchParams.set('page', newPage.toString())
+            setSearchParams(searchParams)
+            setSearch('')
+          }} count={Math.ceil(5000 / Number(limit))}/>}
 
         {!isLoading && !filteredUsers.length &&
           <Typography variant='h5'>

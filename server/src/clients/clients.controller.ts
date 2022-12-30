@@ -1,20 +1,22 @@
 import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common'
+import { ApiTags } from '@nestjs/swagger'
 import { ClientsService } from './clients.service'
 import { CreateClientDto } from './dto/create-client.dto'
 import { UpdateClientDto } from './dto/update-client.dto'
 import { Client } from './schemas/client.schema'
 
 @Controller('clients')
+@ApiTags('Clientes')
 export class ClientsController {
   constructor(private readonly clientsService: ClientsService) { }
 
   @Post()
-  create(@Body() createClientDto: CreateClientDto): Promise<Client>  {
+  create(@Body() createClientDto: CreateClientDto): Promise<Client> {
     return this.clientsService.create(createClientDto)
   }
 
   @Get()
-  findAll(): Promise<Client[]>  {
+  findAll(): Promise<Client[]> {
     return this.clientsService.find()
   }
 

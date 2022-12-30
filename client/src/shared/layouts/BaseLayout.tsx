@@ -10,14 +10,14 @@ interface IBasePageLayoutProps{
 export const BasePageLayout: React.FC<IBasePageLayoutProps> = ({children, title, toolbar}) => {
   const theme = useTheme()
   const smDown = useMediaQuery(theme.breakpoints.down('sm'))
-  const mdDown = useMediaQuery(theme.breakpoints.down('md'))
+  const mdDown = useMediaQuery(theme.breakpoints.down(1000))
   const { toggleDrawerOpen } = useDrawerContext()
 
 
   return(
     <Box height='100%' display='flex' flexDirection='column' gap={1}>
 
-      <Box padding={1} height={theme.spacing(smDown ? 6 : 8)} display='flex' alignItems='center' gap={1}>
+      <Box padding={1} height={theme.spacing(mdDown ? 6 : 8)} display='flex' alignItems='center' gap={1}>
 
         {mdDown && <IconButton onClick={toggleDrawerOpen}>
           <Icon>menu</Icon>
