@@ -1,6 +1,7 @@
 import { Box, CircularProgress, List, Pagination, Paper, Typography, useMediaQuery, useTheme} from '@mui/material'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
+
 import { Toolbar } from '../shared/components'
 import { UserListItem } from '../shared/components/UserListItem'
 import { showApiErrorAlert } from '../shared/functions'
@@ -23,7 +24,7 @@ export const RandomUsers = () => {
     searchParams.set('page', '1')
     searchParams.set('limit', hdDown ? '4' : '6')
     setSearchParams(searchParams)
-  }, [])
+  }, [hdDown])
 
   const page = useMemo(() => {
     return searchParams.get('page') || '10'

@@ -1,4 +1,5 @@
 import { Box, Card, Divider, Typography, useMediaQuery, useTheme } from '@mui/material'
+
 import { TClient } from '../types'
 
 type TClientCardProps = {
@@ -56,7 +57,7 @@ export const ClientCard: React.FC<TClientCardProps> = ({selectedClient}) => {
 
         </Box>
 
-        <Divider orientation='vertical' flexItem />
+        <Divider orientation='vertical' flexItem/>
 
         <Box display='flex' flexDirection='column'
           maxWidth={mobile ? 150 : mdDown ? 200 : 250}

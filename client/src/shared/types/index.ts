@@ -1,2 +1,2 @@
-export * from './randomUser'
 export * from './client'
+export * from './randomUser'

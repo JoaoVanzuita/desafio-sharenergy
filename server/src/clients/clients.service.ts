@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common'
+import { v4 as uuid} from 'uuid'
+
 import { CreateClientDto } from './dto/create-client.dto'
 import { UpdateClientDto } from './dto/update-client.dto'
 import { ClientsRepository } from './repositories/clients.repository'
-import { v4 as uuid} from 'uuid'
 
 @Injectable()
 export class ClientsService {

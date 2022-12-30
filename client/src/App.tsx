@@ -1,8 +1,9 @@
+import './App.css'
+
 import { AppRoutes } from './routes'
 import { Login } from './shared/components'
 import { DrawerMenu } from './shared/components/DrawerMenu'
 import { AppThemeProvider, DrawerProvider } from './shared/contexts'
-import './App.css'
 
 function App() {
 

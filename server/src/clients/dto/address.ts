@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsInt, IsNotEmpty, Length, Min } from 'class-validator'
+import { IsNotEmpty, IsNumber, Length, Min } from 'class-validator'
 
 export class Address {
   @ApiProperty()
@@ -12,7 +12,7 @@ export class Address {
     street: string
   @ApiProperty()
   @IsNotEmpty({message: 'Número é obrigatório'})
-  @IsInt({message: 'Número inválido'})
+  @IsNumber({}, {message: 'Número inválido'})
   @Min(1, {message: 'Número inválido'})
     number: number
 }

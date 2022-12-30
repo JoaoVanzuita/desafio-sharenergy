@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { Type } from 'class-transformer'
 import { IsEmail, IsNotEmpty, IsNotEmptyObject, IsNumberString, IsPhoneNumber, Length, ValidateNested } from 'class-validator'
+
 import { Address } from './address'
 
 export class CreateClientDto {
@@ -20,7 +21,7 @@ export class CreateClientDto {
     phone: string
 
   @ApiProperty()
-  @IsNotEmpty()
+  @IsNotEmpty({message: 'CPF é obrigatório'})
   @Length(11, 11, {message: 'Cpf deve ter 11 caracteres'})
   @IsNumberString({}, {message: 'Cpf inválido'})
     cpf: string

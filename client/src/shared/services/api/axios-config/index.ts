@@ -1,7 +1,7 @@
-import axios, { AxiosRequestConfig } from 'axios'
-import { Environment } from '../../../environment'
+import axios from 'axios'
 
-// import { errorInterceptor } from './interceptors'
+import { Environment } from '../../../environment'
+import { errorInterceptor } from './errors'
 
 const Api = axios.create({
   baseURL: Environment.URL_BASE,
@@ -21,9 +21,9 @@ const Api = axios.create({
 //   (error) => error
 // )
 
-// Api.interceptors.response.use(
-//   response => response,
-//   error => errorInterceptor(error)
-// )
+Api.interceptors.response.use(
+  response => response,
+  error => errorInterceptor(error)
+)
 
 export { Api }

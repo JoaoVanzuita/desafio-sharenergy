@@ -1,5 +1,8 @@
+import './shared/forms/YupTranslations'
+
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
+
 import App from './App'
 import { AppThemeProvider } from './shared/contexts'
 

@@ -82,7 +82,7 @@ export const Toolbar: React.FC<IToolbarProps> = ({
 
         {showButtonSave && <Button variant='contained'
           color='primary'
-          onClick={onClickButtonNew}
+          onClick={onClickButtonSave}
           disableElevation
           startIcon={<Icon>save</Icon>}>
 
@@ -92,7 +92,7 @@ export const Toolbar: React.FC<IToolbarProps> = ({
 
         </Button>}
 
-        {showButtonEdit && <Button variant='contained'
+        {showButtonEdit && <Button variant='outlined'
           color='primary'
           onClick={onClickButtonEdit}
           disableElevation
@@ -136,7 +136,7 @@ export const Toolbar: React.FC<IToolbarProps> = ({
 
         </Button>}
 
-        {smUp && showButtonBack && <Button variant='outlined'
+        {showButtonBack && <Button variant='outlined'
           color='primary'
           onClick={onClickButtonBack}
           disableElevation

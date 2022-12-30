@@ -1,11 +1,13 @@
-import { Box, CircularProgress, List, Paper, Typography, useMediaQuery, useTheme } from '@mui/material'
+import { Alert, Box, CircularProgress, List, Paper, Snackbar, Typography, useMediaQuery, useTheme } from '@mui/material'
 import { useCallback, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
+
 import { ClientCard, ClientListItem, Toolbar } from '../shared/components'
 import { showApiErrorAlert } from '../shared/functions'
 import { BasePageLayout } from '../shared/layouts/BaseLayout'
-import { clientsApi } from '../shared/services/api/clients'
+import { ResponseError } from '../shared/services/api/axios-config/errors'
+import { ClientsService } from '../shared/services/api/clients'
 import { TClient } from '../shared/types'
 
 export const ManageClients = () => {
@@ -18,15 +20,16 @@ export const ManageClients = () => {
   const navigate = useNavigate()
 
   const [isLoading, setIsLoading] = useState(true)
+  const [openSuccessAlert, setOpenSuccessAlert] = useState(false)
   const [clients, setClients] = useState<TClient[]>([])
   const [selectedClient, setSelectedClient] = useState<TClient | null>(null)
 
   const fetchClients = useCallback(async () => {
-    const result = await clientsApi.getAllClients()
+    const result = await ClientsService.getAllClients()
 
     setIsLoading(false)
 
-    if(result instanceof Error ){
+    if(result instanceof ResponseError ){
       showApiErrorAlert({message: result.message, alertBackground, alertColor})
       return
     }
@@ -89,7 +92,7 @@ export const ManageClients = () => {
       if(result.isConfirmed){
 
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const result = await clientsApi.deleteClient(selectedClient._id!)
+        const result = await ClientsService.deleteClient(selectedClient._id!)
 
         if(result instanceof Error){
 
@@ -100,6 +103,7 @@ export const ManageClients = () => {
           })
           return
         }
+        setOpenSuccessAlert(true)
         fetchClients()
       }
     })
@@ -118,8 +122,13 @@ export const ManageClients = () => {
         onClickButtonDelete={handleClickButtonDelete}
         onClickButtonExit={() => console.log('exit')}
       />
-    }
-    >
+    }>
+      <Snackbar open={openSuccessAlert} autoHideDuration={3000} onClose={() => setOpenSuccessAlert(false)}>
+        <Alert onClose={() => setOpenSuccessAlert(false)} severity='success' sx={{ width: '100%' }}>
+          Cliente excluído com sucesso
+        </Alert>
+      </Snackbar>
+
       {isLoading && <Box display='flex' justifyContent='center' alignItems='center'>
         <CircularProgress/>
       </Box>}
@@ -143,13 +152,17 @@ export const ManageClients = () => {
             Clientes
             </Typography>
 
-
-            <List component={Paper}>
+            <List component={Paper}
+              sx={{
+                overflow: 'auto',
+                maxHeight: mdDown ? 300 : 600,
+              }}
+            >
               {clients.length > 0 && clients.map(client => {
                 return (
                   <ClientListItem
+                    selected={client._id === selectedClient?._id}
                     key={client._id}
-                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                     client={client}
                     onClickCLientListItem={selectClient}
                   />
@@ -159,10 +172,10 @@ export const ManageClients = () => {
             </List>
 
           </Box>
-          <Box display='flex' justifyContent='center' alignItems='center' flexDirection='column' order={mdDown ? 1 : 2}>
+          <Box padding={smDown ? 2 : 5} display='flex' alignItems='center' flexDirection='column' order={mdDown ? 1 : 2}>
 
             {selectedClient && <Typography paddingBottom={3}
-              variant={smDown ? 'h6' : 'h5'}>
+              variant={smDown ? 'h5' : 'h4'}>
             Cliente selecionado
             </Typography>}
 

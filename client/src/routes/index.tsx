@@ -1,7 +1,8 @@
 import { useEffect } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
+
+import { GetHttpCat, GetRandomDog, ManageClients, RandomUsers, SaveClient } from '../pages'
 import { useDrawerContext } from '../shared/contexts'
-import { GetHttpCat, GetRandomDog, RandomUsers, ManageClients, SaveClient } from '../pages'
 
 export const AppRoutes = () => {
   const { setDrawerOptions } = useDrawerContext()
