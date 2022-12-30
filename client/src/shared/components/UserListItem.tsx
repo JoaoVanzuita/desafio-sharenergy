@@ -1,6 +1,6 @@
 import { Avatar, Box, ListItem, ListItemAvatar, Typography, useMediaQuery, useTheme } from '@mui/material'
 
-type TUserCardProps = {
+type TUserListItemProps = {
   user: {
     name: {
       first: string
@@ -23,7 +23,7 @@ type TUserCardProps = {
   }
 }
 
-export const UserCard: React.FC<TUserCardProps> = ({user}) => {
+export const UserListItem: React.FC<TUserListItemProps> = ({user}) => {
   const theme = useTheme()
   const smDown = useMediaQuery(theme.breakpoints.down('sm'))
 

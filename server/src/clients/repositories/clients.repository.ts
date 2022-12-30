@@ -27,7 +27,7 @@ export class ClientsRepository {
     })
   }
 
-  async delete(filterQuery: FilterQuery<Client>) {
-    this.clientModel.deleteOne(filterQuery)
+  async delete(filterQuery: FilterQuery<Client>): Promise<Client> {
+    return this.clientModel.findByIdAndDelete(filterQuery)
   }
 }

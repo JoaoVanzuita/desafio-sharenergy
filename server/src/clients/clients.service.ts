@@ -26,14 +26,10 @@ export class ClientsService {
   }
 
   async update(id: string, updateClientDto: UpdateClientDto) {
-
     return this.clientRepository.update({_id: id}, updateClientDto)
   }
 
   async delete(id: string) {
-    const result = this.clientRepository.delete({_id: id})
-
-
-    return result
+    return this.clientRepository.delete({_id: id})
   }
 }

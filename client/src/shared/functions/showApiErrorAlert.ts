@@ -1,12 +1,12 @@
 import Swal from 'sweetalert2'
 
-interface IShowAlertErrorArgs {
+interface IShowApiAlertErrorArgs {
   message: string
   alertBackground: string
   alertColor: string
 }
 
-export const showErrorAlert = (args: IShowAlertErrorArgs) => {
+export const showApiErrorAlert = (args: IShowApiAlertErrorArgs) => {
 
   Swal.fire({
     titleText: 'Ocorreu um erro',
@@ -15,5 +15,4 @@ export const showErrorAlert = (args: IShowAlertErrorArgs) => {
     background: args.alertBackground,
     color: args.alertColor
   })
-
 }

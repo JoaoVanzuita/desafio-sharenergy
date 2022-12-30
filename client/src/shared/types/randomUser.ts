@@ -1,8 +1,8 @@
-export type TUser = {
+export type TRandomUser = {
   name: {
     first: string
     last: string
-    },
+  },
   email: string
   login: {
     uuid: string

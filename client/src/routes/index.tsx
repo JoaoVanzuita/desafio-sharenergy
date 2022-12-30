@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { useDrawerContext } from '../shared/contexts'
-import { GetHttpCat, GetRandomDog, RandomUsers, ManageClients } from '../pages'
+import { GetHttpCat, GetRandomDog, RandomUsers, ManageClients, SaveClient } from '../pages'
 
 export const AppRoutes = () => {
   const { setDrawerOptions } = useDrawerContext()
@@ -37,6 +37,7 @@ export const AppRoutes = () => {
       <Route path='/http-cat' element={<GetHttpCat/>}/>
       <Route path='/random-dog' element={<GetRandomDog/>}/>
       <Route path='/gerenciar-clientes' element={<ManageClients/>}/>
+      <Route path='/gerenciar-clientes/:id' element={<SaveClient/>}/>
       <Route path='*' element={<Navigate to={'/random-users'} />}/>
     </Routes>
   )

@@ -1,20 +1,23 @@
-import { Box, Button, Icon, Paper, TextField, Typography, useTheme } from '@mui/material'
+import { Box, Button, Icon, Paper, TextField, Typography, useMediaQuery, useTheme } from '@mui/material'
 
 interface IToolbarProps {
   textSearch?:string
 
   showSearchInput?:boolean
   showButtonNew?: boolean
+  showButtonSave?: boolean
   showButtonDelete?: boolean
   showButtonEdit?: boolean
-  showButtonManageAccount?: boolean
   showButtonExit?: boolean
+  showButtonBack?: boolean
 
   onChangeTextSearch?: (newText: string) => void
   onClickButtonNew?: () => void
+  onClickButtonSave?: () => void
   onClickButtonEdit?: () => void
   onClickButtonDelete?: () => void
   onClickButtonExit?: () => void
+  onClickButtonBack?: () => void
 }
 
 export const Toolbar: React.FC<IToolbarProps> = ({
@@ -22,18 +25,23 @@ export const Toolbar: React.FC<IToolbarProps> = ({
 
   showSearchInput = false,
   showButtonNew = false,
+  showButtonSave = false,
   showButtonEdit = false,
   showButtonDelete = false,
   showButtonExit = false,
+  showButtonBack = false,
 
   onChangeTextSearch,
   onClickButtonNew,
+  onClickButtonSave,
   onClickButtonEdit,
   onClickButtonDelete,
   onClickButtonExit,
+  onClickButtonBack
 
 }) => {
   const theme = useTheme()
+  const smUp = useMediaQuery(theme.breakpoints.up('sm'))
 
   return(
     <Box
@@ -72,6 +80,18 @@ export const Toolbar: React.FC<IToolbarProps> = ({
 
         </Button>}
 
+        {showButtonSave && <Button variant='contained'
+          color='primary'
+          onClick={onClickButtonNew}
+          disableElevation
+          startIcon={<Icon>save</Icon>}>
+
+          <Typography variant='button' whiteSpace='nowrap' textOverflow='ellipsis' overflow='hidden'>
+            salvar
+          </Typography>
+
+        </Button>}
+
         {showButtonEdit && <Button variant='contained'
           color='primary'
           onClick={onClickButtonEdit}
@@ -104,7 +124,7 @@ export const Toolbar: React.FC<IToolbarProps> = ({
         alignItems='center'
       >
 
-        {showButtonExit && <Button variant='outlined'
+        {smUp && showButtonExit && <Button variant='outlined'
           color='primary'
           onClick={onClickButtonExit}
           disableElevation
@@ -112,6 +132,18 @@ export const Toolbar: React.FC<IToolbarProps> = ({
 
           <Typography variant='button' whiteSpace='nowrap' textOverflow='ellipsis' overflow='hidden'>
             sair
+          </Typography>
+
+        </Button>}
+
+        {smUp && showButtonBack && <Button variant='outlined'
+          color='primary'
+          onClick={onClickButtonBack}
+          disableElevation
+          startIcon={<Icon>arrow_back</Icon>}>
+
+          <Typography variant='button' whiteSpace='nowrap' textOverflow='ellipsis' overflow='hidden'>
+            voltar
           </Typography>
 
         </Button>}

@@ -1,1 +1,1 @@
-export * from './showErrorAlert'
+export * from './showApiErrorAlert'

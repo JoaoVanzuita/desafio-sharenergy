@@ -30,6 +30,6 @@ export class ClientsController {
 
   @Delete(':id')
   delete(@Param('id') id: string) {
-    this.clientsService.delete(id)
+    return this.clientsService.delete(id)
   }
 }

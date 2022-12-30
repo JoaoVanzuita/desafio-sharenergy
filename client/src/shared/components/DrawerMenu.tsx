@@ -38,6 +38,7 @@ export const DrawerMenu: React.FC<IMenuDrawer> = ({children}) => {
   const theme = useTheme()
   const { isDrawerOpen, drawerOptions, toggleDrawerOpen } = useDrawerContext()
   const mdDown = useMediaQuery(theme.breakpoints.down('md'))
+  const smDown = useMediaQuery(theme.breakpoints.down('sm'))
   const {toggleTheme} = useAppThemeContext()
 
   return(
@@ -76,6 +77,13 @@ export const DrawerMenu: React.FC<IMenuDrawer> = ({children}) => {
                 </ListItemIcon>
                 <ListItemText primary="Alternar tema" />
               </ListItemButton>
+
+              {smDown && <ListItemButton onClick={() => console.log('logout')}>
+                <ListItemIcon>
+                  <Icon>logout</Icon>
+                </ListItemIcon>
+                <ListItemText primary="Sair" />
+              </ListItemButton>}
             </List>
           </Box>
 

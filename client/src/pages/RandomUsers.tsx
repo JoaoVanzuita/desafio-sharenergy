@@ -1,11 +1,11 @@
 import { Box, CircularProgress, List, Pagination, Paper, Typography, useMediaQuery, useTheme} from '@mui/material'
 import { useCallback, useEffect, useState } from 'react'
 import { Toolbar } from '../shared/components'
-import { UserCard } from '../shared/components/UserCard'
-import { showErrorAlert } from '../shared/functions'
+import { UserListItem } from '../shared/components/UserListItem'
+import { showApiErrorAlert } from '../shared/functions'
 import { BasePageLayout } from '../shared/layouts/BaseLayout'
 import { randomUsersApi } from '../shared/services/api/random-users'
-import { TUser } from '../shared/types'
+import { TRandomUser } from '../shared/types'
 
 export const RandomUsers = () => {
   const theme = useTheme()
@@ -13,12 +13,12 @@ export const RandomUsers = () => {
   const alertColor = theme.palette.mode === 'light' ? '#000000' : '#ffffff'
   const smDown = useMediaQuery(theme.breakpoints.down('sm'))
 
-  const [users, setUsers] = useState<TUser[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [users, setUsers] = useState<TRandomUser[]>([])
   const [page, setPage] = useState(1)
   const [search, setSearch] = useState('')
 
-  const filteredUsers: TUser[] = search.length > 0
+  const filteredUsers: TRandomUser[] = search.length > 0
     ? users.filter(user => {
       return (
         user.name.first.includes(search) ||
@@ -36,7 +36,7 @@ export const RandomUsers = () => {
     setIsLoading(false)
 
     if(result instanceof Error ){
-      showErrorAlert({message: result.message, alertBackground, alertColor})
+      showApiErrorAlert({message: result.message, alertBackground, alertColor})
       return
     }
 
@@ -61,7 +61,7 @@ export const RandomUsers = () => {
 
         <List component={Paper}>
           {filteredUsers.length > 0 && filteredUsers.map(user => {
-            return <UserCard key={user.login.uuid} user={user}/>
+            return <UserListItem key={user.login.uuid} user={user}/>
           })}
         </List>
 
