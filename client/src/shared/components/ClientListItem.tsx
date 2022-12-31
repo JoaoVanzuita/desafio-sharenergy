@@ -15,7 +15,7 @@ export const ClientListItem: React.FC<TUserListItemProps> = ({client, onClickCLi
 
   const handleOnClickListItem = useCallback(() => {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    onClickCLientListItem(client._id!)
+    onClickCLientListItem(client.id!)
   },[])
 
   return(

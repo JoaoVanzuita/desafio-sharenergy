@@ -1,12 +1,12 @@
 import { Environment } from '../../../environment'
-import { TClient } from '../../../types'
+import { TUser } from '../../../types'
 import { Api } from '../axios-config'
 import { ResponseError } from '../axios-config/errors'
 
-export const updateClient = async (client: TClient): Promise<TClient | ResponseError> => {
+export const findCurrentUser = async (): Promise<TUser | ResponseError> => {
 
   try {
-    const { data } = await Api.put(`clients/${client.id}`, client)
+    const { data } = await Api.get('/users/profile')
 
     return data
   }catch(err){

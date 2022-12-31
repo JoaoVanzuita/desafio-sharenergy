@@ -5,21 +5,11 @@ import { errorInterceptor } from './errors'
 
 const Api = axios.create({
   baseURL: Environment.URL_BASE,
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/json'
   }
 })
-
-// Api.interceptors.request.use(
-//   async (config: AxiosRequestConfig) => {
-//     config.headers = config.headers ?? {}
-
-//     config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`
-
-//     return config
-//   },
-//   (error) => error
-// )
 
 Api.interceptors.response.use(
   response => response,

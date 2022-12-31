@@ -13,7 +13,7 @@ import { ResponseError } from '../shared/services/api/axios-config/errors'
 import { ClientsService } from '../shared/services/api/clients'
 import { TClient } from '../shared/types'
 
-type TFormData = Omit<TClient, '_id'>
+type TFormData = Omit<TClient, 'id'>
 
 const formValidationSchema: yup.SchemaOf<TFormData> = yup.object().shape({
   name: yup.string().min(3).max(20).required(),
@@ -68,13 +68,13 @@ export const SaveClient = () => {
         return
       }
 
-      navigate(`/gerenciar-clientes/${result._id}`)
+      navigate(`/gerenciar-clientes/${result.id}`)
     })
   },[theme])
 
   const updateClient = useCallback((id: string, clientData: TFormData) => {
     ClientsService.updateClient({
-      _id: id,
+      id,
       ...clientData
     }).then(result => {
       setIsLoading(false)
@@ -87,7 +87,7 @@ export const SaveClient = () => {
     })
   },[theme])
 
-  const handleSave = (formData: TFormData) => {
+  const handleSave = useCallback((formData: TFormData) => {
     setIsLoading(true)
 
     formValidationSchema.validate(formData, { abortEarly: false })
@@ -112,7 +112,7 @@ export const SaveClient = () => {
         })
         formRef.current?.setErrors(validationErrors)
       })
-  }
+  }, [id])
 
   return(
     <BasePageLayout title={id === 'novo' ? 'Novo cliente' : 'Editar cliente'} toolbar={

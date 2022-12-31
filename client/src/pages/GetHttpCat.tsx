@@ -1,6 +1,6 @@
 export const GetHttpCat = () => {
 
   return(
-    <>GetHttpCat</>
+    <>HTTP CATS</>
   )
 }

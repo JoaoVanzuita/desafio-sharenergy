@@ -1,6 +1,6 @@
 export const GetRandomDog = () => {
 
   return(
-    <>GetRandomDog</>
+    <>RANDOM DOGS</>
   )
 }

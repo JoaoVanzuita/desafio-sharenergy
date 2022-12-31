@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
-import { ApiTags } from '@nestjs/swagger'
+import { ApiCookieAuth, ApiTags } from '@nestjs/swagger'
 
 import { ClientsService } from './clients.service'
 import { CreateClientDto } from './dto/create-client.dto'
@@ -8,6 +8,7 @@ import { Client } from './schemas/client.schema'
 
 @Controller('clients')
 @ApiTags('Clientes')
+@ApiCookieAuth()
 export class ClientsController {
   constructor(private readonly clientsService: ClientsService) { }
 

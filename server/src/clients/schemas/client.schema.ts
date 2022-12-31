@@ -14,7 +14,7 @@ class Address {
 export class Client {
 
   @Prop()
-    _id: string
+    id: string
   @Prop()
     name: string
   @Prop()

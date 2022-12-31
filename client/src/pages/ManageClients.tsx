@@ -42,7 +42,7 @@ export const ManageClients = () => {
   }, [theme])
 
   const selectClient = (id: string) => {
-    const client = clients.find(client => client._id === id)
+    const client = clients.find(client => client.id === id)
 
     if(!client) {
       return
@@ -53,7 +53,7 @@ export const ManageClients = () => {
 
   const handleClickButtonEdit = () => {
     if(selectedClient){
-      navigate(`/gerenciar-clientes/${selectedClient._id}`)
+      navigate(`/gerenciar-clientes/${selectedClient.id}`)
       return
     }
     Swal.fire({
@@ -92,7 +92,7 @@ export const ManageClients = () => {
       if(result.isConfirmed){
 
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const result = await ClientsService.deleteClient(selectedClient._id!)
+        const result = await ClientsService.deleteClient(selectedClient.id!)
 
         if(result instanceof Error){
 
@@ -120,7 +120,7 @@ export const ManageClients = () => {
         onClickButtonNew={() => navigate('/gerenciar-clientes/novo')}
         onClickButtonEdit={handleClickButtonEdit}
         onClickButtonDelete={handleClickButtonDelete}
-        onClickButtonExit={() => console.log('exit')}
+        onClickButtonExit={() => console.log('logout')}
       />
     }>
       <Snackbar open={openSuccessAlert} autoHideDuration={3000} onClose={() => setOpenSuccessAlert(false)}>
@@ -161,8 +161,8 @@ export const ManageClients = () => {
               {clients.length > 0 && clients.map(client => {
                 return (
                   <ClientListItem
-                    selected={client._id === selectedClient?._id}
-                    key={client._id}
+                    selected={client.id === selectedClient?.id}
+                    key={client.id}
                     client={client}
                     onClickCLientListItem={selectClient}
                   />

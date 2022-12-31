@@ -1,33 +1,41 @@
-import { Box, Button, Card, CardActions, CardContent, Icon, LinearProgress, List, ListItemButton, ListItemIcon, ListItemText, Paper, TextField, Typography, useTheme } from '@mui/material'
+import { Box, Button, Card, CardActions, CardContent, Icon, LinearProgress, List, ListItemButton, ListItemIcon, ListItemText, Paper, TextField, Typography, useMediaQuery, useTheme } from '@mui/material'
 import { useState } from 'react'
+import * as yup from 'yup'
 
-import { useAppThemeContext } from '../contexts'
-
-
-
-
+import { useAppThemeContext, useAuthContext } from '../contexts'
+import { AuthService } from '../services/api/auth'
 
 interface ILoginProps {
   children: React.ReactNode
 }
 
+const loginSchema = yup.object().shape({
+  username: yup.string().min(3).required(),
+  password: yup.string().min(8).required()
+})
+
 export const Login: React.FC<ILoginProps> = ( {children} ) => {
-  const [ isLoading, setIsLoading ] = useState(false)
+  const theme = useTheme()
+  const mdDown = useMediaQuery(theme.breakpoints.down('md'))
+  const smDown = useMediaQuery(theme.breakpoints.down('sm'))
   const {toggleTheme} = useAppThemeContext()
-  const [email, setEmail] = useState('')
+  const { isAuthenticated } = useAuthContext()
+
+  const [ isLoading, setIsLoading ] = useState(false)
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [emailError, setEmailError] = useState('')
+  const [usernameError, setUsernameError] = useState('')
   const [passwordError, setPasswordError] = useState('')
   const teste = true
 
-  if(teste){
+  if(isAuthenticated){
     return <>{children}</>
   }
 
   return(
     <Box width='100vw' height='100vh' display='flex' flexDirection='column' alignItems='center' justifyContent='center'>
 
-      <Box position='absolute' top='0' right='0'>
+      <Box position='absolute' top='15px' right='15px'>
         <List component="nav">
           <ListItemButton onClick={toggleTheme} component={Paper}>
             <ListItemIcon>
@@ -36,6 +44,12 @@ export const Login: React.FC<ILoginProps> = ( {children} ) => {
             <ListItemText primary="Alternar tema" />
           </ListItemButton>
         </List>
+      </Box>
+
+      <Box position='absolute' top={70}>
+        <Typography variant='overline' fontSize={smDown ? 30 : mdDown ? 40 : 50}>
+          Desafio Sharenergy
+        </Typography>
       </Box>
 
       <Card>
@@ -47,12 +61,12 @@ export const Login: React.FC<ILoginProps> = ( {children} ) => {
             </Typography>
 
             <TextField fullWidth label='Email' type='email'
-              value={email}
-              error={!!emailError}
+              value={username}
+              error={!!usernameError}
               disabled={isLoading}
-              helperText={emailError}
-              onChange={ev => setEmail(ev.currentTarget.value)}
-              onKeyDown={() => setEmailError('')}
+              helperText={usernameError}
+              onChange={ev => setUsername(ev.currentTarget.value)}
+              onKeyDown={() => setUsernameError('')}
             />
             <TextField fullWidth label='Senha' type='password'
               value={password}
@@ -69,7 +83,9 @@ export const Login: React.FC<ILoginProps> = ( {children} ) => {
         <CardActions>
           <Box width='100%' display='flex' justifyContent='center'>
 
-            <Button disabled={isLoading} variant='contained' onClick={() => console.log('submit')}>
+            <Button disabled={isLoading} variant='contained' onClick={() => {
+              AuthService.login('desafiosharenergy', 'sh@r3n3rgy', true)
+            }}>
               Entrar
             </Button>
 

@@ -1,7 +1,8 @@
-import { Avatar, Box,Divider, Drawer, Icon, List, ListItemButton, ListItemIcon, ListItemText, useMediaQuery, useTheme} from '@mui/material'
+import { Box, Divider, Drawer, Icon, List, ListItemButton, ListItemIcon, ListItemText, Typography, useMediaQuery, useTheme } from '@mui/material'
+import { useEffect, useState } from 'react'
 import { useMatch, useNavigate, useResolvedPath } from 'react-router-dom'
 
-import { useAppThemeContext, useDrawerContext } from '../contexts'
+import { useAppThemeContext, useAuthContext, useDrawerContext } from '../contexts'
 
 interface IListItemLinkProps {
   to: string;
@@ -36,10 +37,25 @@ interface IMenuDrawer {
 }
 export const DrawerMenu: React.FC<IMenuDrawer> = ({children}) => {
   const theme = useTheme()
+  const { currentUser } = useAuthContext()
   const { isDrawerOpen, drawerOptions, toggleDrawerOpen } = useDrawerContext()
   const hdDown = useMediaQuery(theme.breakpoints.down(1000))
   const smDown = useMediaQuery(theme.breakpoints.down('sm'))
   const {toggleTheme} = useAppThemeContext()
+
+  const [completeName, setCompleteName] = useState('')
+
+  useEffect(() => {
+    if(!currentUser) return
+
+    const name = currentUser.username.split(' ')
+
+    for (let i = 0; i < name.length; i++) {
+      name[i] = name[i][0].toUpperCase() + name[i].substr(1)
+    }
+
+    setCompleteName(name.join(' '))
+  },[currentUser])
 
   return(
     <>
@@ -48,9 +64,9 @@ export const DrawerMenu: React.FC<IMenuDrawer> = ({children}) => {
         <Box width={theme.spacing(28)} height='100%' display='flex' flexDirection='column'>
 
           <Box width='100%' height={theme.spacing(20)} display='flex' alignItems='center' justifyContent='center'>
-            <Avatar
-              sx={{height:theme.spacing(12), width: theme.spacing(12)}}
-              src='https://reactjs.org/logo-og.png'/>
+            <Typography variant='h5'>
+              {completeName}
+            </Typography>
           </Box>
 
           <Divider/>

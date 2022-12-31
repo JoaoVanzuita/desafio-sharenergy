@@ -12,6 +12,10 @@ export class UsersRepository {
     return this.userModel.findOne(filterQuery)
   }
 
+  async findUserWithPass(filterQuery: FilterQuery<User>): Promise<User> {
+    return this.userModel.findOne(filterQuery).select('+password')
+  }
+
   async create(User: User): Promise<User> {
     const newUser = new this.userModel(User)
 

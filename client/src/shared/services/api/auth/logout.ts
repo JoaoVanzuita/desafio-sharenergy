@@ -1,14 +1,12 @@
 import { Environment } from '../../../environment'
-import { TClient } from '../../../types'
 import { Api } from '../axios-config'
 import { ResponseError } from '../axios-config/errors'
 
-export const updateClient = async (client: TClient): Promise<TClient | ResponseError> => {
+export const logout = async (): Promise<void | ResponseError> => {
 
   try {
-    const { data } = await Api.put(`clients/${client.id}`, client)
+    await Api.post('/auth/logout')
 
-    return data
   }catch(err){
 
     if (err instanceof ResponseError) {
