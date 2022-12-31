@@ -147,7 +147,7 @@ export const ManageClients = () => {
       >
 
         {!isLoading && clients.length > 0 && <>
-          <Box padding={smDown ? 2 : 5} display='flex' flexDirection='column' alignItems='center' order={mdDown ? 2 : 1}>
+          <Box padding={smDown ? 2 : 5} display='flex' flexDirection='column' alignItems='center' >
             <Typography variant={smDown ? 'h5' : 'h4'} paddingBottom={3}>
             Clientes
             </Typography>
@@ -155,7 +155,7 @@ export const ManageClients = () => {
             <List component={Paper}
               sx={{
                 overflow: 'auto',
-                maxHeight: mdDown ? 300 : 600,
+                maxHeight: mdDown ? 250 : 600,
               }}
             >
               {clients.length > 0 && clients.map(client => {
@@ -172,7 +172,7 @@ export const ManageClients = () => {
             </List>
 
           </Box>
-          <Box padding={smDown ? 2 : 5} display='flex' alignItems='center' flexDirection='column' order={mdDown ? 1 : 2}>
+          <Box padding={smDown ? 2 : 5} display='flex' alignItems='center' flexDirection='column' >
 
             {selectedClient && <Typography paddingBottom={3}
               variant={smDown ? 'h5' : 'h4'}>
