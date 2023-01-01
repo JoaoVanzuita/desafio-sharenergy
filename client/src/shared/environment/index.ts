@@ -1,6 +1,5 @@
 export const Environment = {
-
-  URL_BASE: 'http://localhost:8080',
-
-  SERVER_ERROR: 'Ocorreu um erro desconhecido ao consultar o servidor.'
+  URL_BASE: import.meta.env.VITE_BASE_URL,
+  HASH_KEY: import.meta.env.VITE_HASH_KEY,
+  SERVER_ERROR: 'Ocorreu um erro desconhecido ao consultar o servidor'
 }

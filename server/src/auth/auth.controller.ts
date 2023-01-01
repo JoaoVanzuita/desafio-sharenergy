@@ -17,19 +17,12 @@ export class AuthController {
   @IsPublic()
   @HttpCode(HttpStatus.OK)
   @UseGuards(LocalAuthGuard)
-  async login(@Req() req: AuthRequest,
-    @Res() res: Response,
-    @Body() loginData: LoginDto
-  ) {
+  async login(@Req() req: AuthRequest, @Res() res: Response) {
 
-    const accessToken = await this.auth.login(req.user, loginData.rememberMe)
-
-    const cookieAge: number = loginData.rememberMe
-      ? 1000 * 3600 * 24 * 7
-      : 1000 * 3600 * 8
+    const accessToken = await this.auth.login(req.user)
 
     return res.cookie('access_token', accessToken, {
-      maxAge: cookieAge,
+      maxAge: 1000 * 3600 * 12,
       sameSite: 'none',
       secure: true,
       httpOnly: true,

@@ -3,17 +3,16 @@ import { TUser } from '../../../types'
 import { Api } from '../axios-config'
 import { ResponseError } from '../axios-config/errors'
 
-export const login = async (username: string, password: string, rememberMe: boolean): Promise<TUser | ResponseError> => {
+export const login = async (username: string, password: string): Promise<TUser | ResponseError> => {
 
   try {
-    const { data } = await Api.post('/auth/login',{
+    const { data } = await Api.post('/auth/login', {
       username,
-      password,
-      rememberMe
-    } )
+      password
+    })
 
     return data
-  }catch(err){
+  } catch (err) {
 
     if (err instanceof ResponseError) {
       return err

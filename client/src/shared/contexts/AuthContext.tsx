@@ -1,14 +1,14 @@
 import { createContext, useContext, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import { AuthService } from '../services/api/auth'
 import { ResponseError } from '../services/api/axios-config/errors'
 import { TUser } from '../types'
 
-
 export type TAuthContext = {
   isAuthenticated: boolean
   currentUser: TUser | null
-  signin: (username: string, password: string, rememberMe: boolean) => Promise<ResponseError | void>
+  signin: (username: string, password: string) => Promise<ResponseError | void>
   signout: () => Promise<ResponseError | void>
 }
 
@@ -19,6 +19,8 @@ interface IAuthProviderProps {
 }
 
 export const AuthProvider: React.FC<IAuthProviderProps> = ({children}) => {
+  const navigate = useNavigate()
+
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [currentUser, setCurrentUser] = useState<TUser | null>(null)
 
@@ -33,8 +35,8 @@ export const AuthProvider: React.FC<IAuthProviderProps> = ({children}) => {
     })
   }, [])
 
-  const signin = async (username: string, password: string, rememberMe: boolean) => {
-    const result = await AuthService.login(username, password, rememberMe)
+  const signin = async (username: string, password: string) => {
+    const result = await AuthService.login(username, password)
 
     if(result instanceof ResponseError){
       setIsAuthenticated(false)
@@ -46,23 +48,16 @@ export const AuthProvider: React.FC<IAuthProviderProps> = ({children}) => {
   }
 
   const signout = async () => {
-
     const result = await AuthService.logout()
 
-    if(!result){
-      setIsAuthenticated(false)
-      setCurrentUser(null)
-      return
+    if(result && result.statusCode !== 401){
+      setIsAuthenticated(true)
+      return result
     }
 
-    if(result.statusCode === 401){
-      setIsAuthenticated(false)
-      setCurrentUser(null)
-      return
-    }
-
-    setIsAuthenticated(true)
-    return result
+    setIsAuthenticated(false)
+    setCurrentUser(null)
+    navigate('/')
   }
 
   return (

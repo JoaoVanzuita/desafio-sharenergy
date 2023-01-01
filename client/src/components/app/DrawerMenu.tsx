@@ -1,8 +1,9 @@
 import { Box, Divider, Drawer, Icon, List, ListItemButton, ListItemIcon, ListItemText, Typography, useMediaQuery, useTheme } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { useCallback } from 'react'
 import { useMatch, useNavigate, useResolvedPath } from 'react-router-dom'
 
-import { useAppThemeContext, useAuthContext, useDrawerContext } from '../contexts'
+import { useAppThemeContext,useAuthContext, useDrawerContext } from '../../shared/contexts'
+import { showApiErrorAlert } from '../../shared/functions'
 
 interface IListItemLinkProps {
   to: string;
@@ -37,25 +38,21 @@ interface IMenuDrawer {
 }
 export const DrawerMenu: React.FC<IMenuDrawer> = ({children}) => {
   const theme = useTheme()
-  const { currentUser } = useAuthContext()
-  const { isDrawerOpen, drawerOptions, toggleDrawerOpen } = useDrawerContext()
   const hdDown = useMediaQuery(theme.breakpoints.down(1000))
   const smDown = useMediaQuery(theme.breakpoints.down('sm'))
+  const alertBackground = theme.palette.background.default
+  const alertColor = theme.palette.mode === 'light' ? '#000000' : '#ffffff'
+  const { isDrawerOpen, drawerOptions, toggleDrawerOpen } = useDrawerContext()
+  const { currentUser, signout } = useAuthContext()
   const {toggleTheme} = useAppThemeContext()
 
-  const [completeName, setCompleteName] = useState('')
+  const handleLogout = useCallback(() => {
+    signout().then(result => {
+      if(!result) return
 
-  useEffect(() => {
-    if(!currentUser) return
-
-    const name = currentUser.username.split(' ')
-
-    for (let i = 0; i < name.length; i++) {
-      name[i] = name[i][0].toUpperCase() + name[i].substr(1)
-    }
-
-    setCompleteName(name.join(' '))
-  },[currentUser])
+      showApiErrorAlert({message: result.message, alertBackground, alertColor})
+    })
+  }, [theme])
 
   return(
     <>
@@ -65,7 +62,9 @@ export const DrawerMenu: React.FC<IMenuDrawer> = ({children}) => {
 
           <Box width='100%' height={theme.spacing(20)} display='flex' alignItems='center' justifyContent='center'>
             <Typography variant='h5'>
-              {completeName}
+
+              {currentUser?.username.toLowerCase().replace(/(?:^|\s)\S/g, (char:string) => char.toUpperCase())}
+
             </Typography>
           </Box>
 
@@ -94,7 +93,7 @@ export const DrawerMenu: React.FC<IMenuDrawer> = ({children}) => {
                 <ListItemText primary="Alternar tema" />
               </ListItemButton>
 
-              {smDown && <ListItemButton onClick={() => console.log('logout')}>
+              {smDown && <ListItemButton onClick={handleLogout}>
                 <ListItemIcon>
                   <Icon>logout</Icon>
                 </ListItemIcon>

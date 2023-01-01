@@ -11,6 +11,9 @@ services:
       sh -c "npm i && npm run start:dev"
     ports:
       - '5173:5173'
+    environment:
+      - VITE_HASH_KEY=${VITE_HASH_KEY}
+      - VITE_BASE_URL=${VITE_BASE_URL}
   sharenergy_server:
     container_name: sharenergy_server
     image: node:lts

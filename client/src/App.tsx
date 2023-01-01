@@ -1,8 +1,8 @@
 import './App.css'
 
+import { Login } from './components'
+import { DrawerMenu } from './components/app/DrawerMenu'
 import { AppRoutes } from './routes'
-import { Login } from './shared/components'
-import { DrawerMenu } from './shared/components/DrawerMenu'
 import { AppThemeProvider, AuthProvider, DrawerProvider } from './shared/contexts'
 
 function App() {

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import * as bcrypt from 'bcrypt'
 import { User } from 'src/users/schemas/user.schema'
@@ -14,22 +14,13 @@ export class AuthService {
     private readonly jwtService: JwtService
   ) { }
 
-  async login(user: User, rememberMe: boolean): Promise<string> {
+  async login(user: User): Promise<string> {
     const payLoad: UserPayload = {
       sub: user.id,
       username: user.username
     }
 
-    let expirationTime: string
-    if(rememberMe){
-      expirationTime = '7d'
-    }else{
-      expirationTime = '8h'
-    }
-
-    const token = this.jwtService.sign(payLoad, {
-      expiresIn: expirationTime
-    })
+    const token = this.jwtService.sign(payLoad)
 
     return token
   }
@@ -41,8 +32,6 @@ export class AuthService {
     if (user) {
       const isPassValid = await bcrypt.compare(password, user.password)
 
-      console.log(isPassValid)
-
       if (isPassValid) {
         return {
           id: user.id,
@@ -51,6 +40,6 @@ export class AuthService {
         }
       }
     }
-    throw new Error('Nome de usuário ou senha inválidos')
+    throw new BadRequestException('Nome de usuário ou senha inválidos')
   }
 }

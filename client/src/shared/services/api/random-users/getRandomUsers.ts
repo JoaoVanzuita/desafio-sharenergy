@@ -1,4 +1,5 @@
 import axios from 'axios'
+
 import { Environment } from '../../../environment'
 import { TRandomUser } from '../../../types'
 

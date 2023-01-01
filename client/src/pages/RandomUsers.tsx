@@ -2,8 +2,9 @@ import { Box, CircularProgress, List, Pagination, Paper, Typography, useMediaQue
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
-import { Toolbar } from '../shared/components'
-import { UserListItem } from '../shared/components/UserListItem'
+import { Toolbar } from '../components'
+import { UserListItem } from '../components/users/UserListItem'
+import { useAuthContext } from '../shared/contexts'
 import { showApiErrorAlert } from '../shared/functions'
 import { BasePageLayout } from '../shared/layouts/BaseLayout'
 import { randomUsersApi } from '../shared/services/api/random-users'
@@ -19,6 +20,7 @@ export const RandomUsers = () => {
   const [users, setUsers] = useState<TRandomUser[]>([])
   const [searchParams, setSearchParams] = useSearchParams()
   const [search, setSearch] = useState('')
+  const { signout } = useAuthContext()
 
   useEffect(() => {
     searchParams.set('page', '1')
@@ -63,11 +65,21 @@ export const RandomUsers = () => {
     fetchUsers(Number(page), Number(limit))
   },[page, limit])
 
+  const handleLogout = useCallback(() => {
+    signout().then(result => {
+      if(!result) return
+
+      showApiErrorAlert({message: result.message, alertBackground, alertColor})
+    })
+  }, [theme])
+
   return(
     <BasePageLayout title='Random users' toolbar={<Toolbar
       textSearch={search}
       showSearchInput
       showButtonExit
+
+      onClickButtonExit={handleLogout}
       onChangeTextSearch={text => setSearch(text) }
     />}
     >
@@ -82,7 +94,7 @@ export const RandomUsers = () => {
         </List>
 
         {!isLoading && filteredUsers.length > 0 && <Pagination page={Number(page)}
-          onChange={(ev, newPage) => {
+          onChange={(_, newPage) => {
             searchParams.set('page', newPage.toString())
             setSearchParams(searchParams)
             setSearch('')

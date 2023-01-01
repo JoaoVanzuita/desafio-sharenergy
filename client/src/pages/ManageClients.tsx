@@ -3,7 +3,8 @@ import { useCallback, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 
-import { ClientCard, ClientListItem, Toolbar } from '../shared/components'
+import { ClientCard, ClientListItem, Toolbar } from '../components'
+import { useAuthContext } from '../shared/contexts'
 import { showApiErrorAlert } from '../shared/functions'
 import { BasePageLayout } from '../shared/layouts/BaseLayout'
 import { ResponseError } from '../shared/services/api/axios-config/errors'
@@ -18,6 +19,7 @@ export const ManageClients = () => {
   const alertBackground = theme.palette.background.default
   const alertColor = theme.palette.mode === 'light' ? '#000000' : '#ffffff'
   const navigate = useNavigate()
+  const { signout } = useAuthContext()
 
   const [isLoading, setIsLoading] = useState(true)
   const [openSuccessAlert, setOpenSuccessAlert] = useState(false)
@@ -95,12 +97,7 @@ export const ManageClients = () => {
         const result = await ClientsService.deleteClient(selectedClient.id!)
 
         if(result instanceof Error){
-
-          showApiErrorAlert({
-            message: result.message,
-            alertBackground,
-            alertColor
-          })
+          showApiErrorAlert({ message: result.message, alertBackground, alertColor })
           return
         }
         setOpenSuccessAlert(true)
@@ -108,6 +105,14 @@ export const ManageClients = () => {
       }
     })
   },[selectedClient, theme])
+
+  const handleLogout = useCallback(() => {
+    signout().then(result => {
+      if(!result) return
+
+      showApiErrorAlert({message: result.message, alertBackground, alertColor})
+    })
+  }, [theme])
 
   return(
     <BasePageLayout title='Gerenciar clientes' toolbar={
@@ -120,7 +125,7 @@ export const ManageClients = () => {
         onClickButtonNew={() => navigate('/gerenciar-clientes/novo')}
         onClickButtonEdit={handleClickButtonEdit}
         onClickButtonDelete={handleClickButtonDelete}
-        onClickButtonExit={() => console.log('logout')}
+        onClickButtonExit={handleLogout}
       />
     }>
       <Snackbar open={openSuccessAlert} autoHideDuration={3000} onClose={() => setOpenSuccessAlert(false)}>

@@ -5,8 +5,8 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import * as yup from 'yup'
 
-import { Toolbar } from '../shared/components'
-import { FormTextField, IFormErrors } from '../shared/forms'
+import { Toolbar } from '../components'
+import { FormTextField, IFormErrors } from '../components/forms'
 import { numberMaskInput, showApiErrorAlert } from '../shared/functions'
 import { BasePageLayout } from '../shared/layouts/BaseLayout'
 import { ResponseError } from '../shared/services/api/axios-config/errors'
@@ -87,7 +87,7 @@ export const SaveClient = () => {
     })
   },[theme])
 
-  const handleSave = useCallback((formData: TFormData) => {
+  const handleSubmit = useCallback((formData: TFormData) => {
     setIsLoading(true)
 
     formValidationSchema.validate(formData, { abortEarly: false })
@@ -138,7 +138,7 @@ export const SaveClient = () => {
 
         {isLoading && <LinearProgress variant='indeterminate'/>}
 
-        <Form ref={formRef} onSubmit={handleSave}>
+        <Form ref={formRef} onSubmit={handleSubmit}>
 
           <Box margin={1} display='flex' alignContent='center' component={Paper}
             paddingY={4}
@@ -149,7 +149,7 @@ export const SaveClient = () => {
 
             <Box display='flex' flexDirection='column' alignContent='center' gap={2}>
 
-              <FormTextField name='name' label='Nome completo' inputProps={{ maxLength: 20 }}   disabled={isLoading} />
+              <FormTextField name='name' label='Nome completo' inputProps={{ maxLength: 20 }} disabled={isLoading} />
               <FormTextField name='email' label='Email'  disabled={isLoading} />
               <FormTextField name='phone' label='Telefone' disabled={isLoading}
                 inputProps={{ maxLength: 13 }}

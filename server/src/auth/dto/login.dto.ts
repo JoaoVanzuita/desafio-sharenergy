@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsBoolean, IsNotEmpty, Length, Matches } from 'class-validator'
+import { IsNotEmpty, Length, Matches } from 'class-validator'
 
 export class LoginDto {
   @ApiProperty()
@@ -12,9 +12,4 @@ export class LoginDto {
   @Matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]/, { message: 'A senha é muito fraca' })
   @Length(8, 20, {message: 'Senha precisa ter entre 8 e 20 caracteres' })
     password: string
-
-  @ApiProperty()
-  @IsNotEmpty({message: '"Lembrar de mim" é obrigatório'})
-  @IsBoolean({message: 'Valor de "lembrar de mim" inválido'})
-    rememberMe: boolean
 }

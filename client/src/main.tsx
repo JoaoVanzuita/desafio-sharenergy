@@ -1,4 +1,4 @@
-import './shared/forms/YupTranslations'
+import './shared/utils/YupTranslations'
 
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
