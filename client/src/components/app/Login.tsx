@@ -41,7 +41,6 @@ export const Login: React.FC<ILoginProps> = ( {children} ) => {
   const [rememberMe, setRememberMe] = useState(false)
   const [showPass, setShowPass] = useState(false)
 
-
   useEffect(() => {
     setShowPass(false)
 
@@ -88,7 +87,7 @@ export const Login: React.FC<ILoginProps> = ( {children} ) => {
         })
         formRef.current?.setErrors(validationErrors)
       })
-  },[])
+  },[rememberMe])
 
   if(isAuthenticated){
     return <>{children}</>

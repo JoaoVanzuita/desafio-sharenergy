@@ -1,5 +1,5 @@
 import * as getRandomUsers from './getRandomUsers'
 
-export const randomUsersApi = {
+export const RandomUsersService = {
   ...getRandomUsers
 }

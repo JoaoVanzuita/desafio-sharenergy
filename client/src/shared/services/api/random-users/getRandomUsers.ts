@@ -1,20 +1,20 @@
-import axios from 'axios'
-
 import { Environment } from '../../../environment'
 import { TRandomUser } from '../../../types'
+import { Api } from '../axios-config'
+import { ResponseError } from '../axios-config/errors'
 
-export const getRandomUsers = async (page: number, limit: number): Promise<TRandomUser[] | Error> => {
+export const getRandomUsers = async (page: number, limit: number): Promise<TRandomUser[] | ResponseError> => {
 
   try {
-    const { data } = await axios.get(`https://randomuser.me/api/?page=${page}&results=${limit}&seed=abc&inc=name,login,email,dob,picture&noinfo`)
+    const { data } = await Api.get(`random-users?page=${page}&results=${limit}`)
 
-    return data.results
+    return data
   } catch (err) {
 
-    if (err instanceof Error) {
+    if (err instanceof ResponseError) {
       return err
     }
 
-    return new Error(Environment.SERVER_ERROR)
+    return new ResponseError(Environment.SERVER_ERROR, 500)
   }
 }

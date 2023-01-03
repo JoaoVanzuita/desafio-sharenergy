@@ -12,6 +12,7 @@ interface IToolbarProps {
   showButtonBack?: boolean
 
   onChangeTextSearch?: (newText: string) => void
+  onKeyDownTextSearch?: (ev: React.KeyboardEvent) => void
   onClickButtonNew?: () => void
   onClickButtonSave?: () => void
   onClickButtonEdit?: () => void
@@ -32,6 +33,7 @@ export const Toolbar: React.FC<IToolbarProps> = ({
   showButtonBack = false,
 
   onChangeTextSearch,
+  onKeyDownTextSearch,
   onClickButtonNew,
   onClickButtonSave,
   onClickButtonEdit,
@@ -65,6 +67,7 @@ export const Toolbar: React.FC<IToolbarProps> = ({
           size='small'
           label={'Pesquisar'}
           value={textSearch}
+          onKeyDown={ev => onKeyDownTextSearch?.(ev)}
           onChange={ev => onChangeTextSearch?.(ev.currentTarget.value)}
         />}
 

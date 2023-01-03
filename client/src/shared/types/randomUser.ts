@@ -1,20 +1,7 @@
 export type TRandomUser = {
-  name: {
-    first: string
-    last: string
-  },
+  name: string
   email: string
-  login: {
-    uuid: string
-    username: string
-
-  },
-  dob: {
-    age: number
-  },
-  picture: {
-    large: string
-    medium: string
-    thumbnail: string
-  }
+  username: string
+  age: number
+  picture: string
 }

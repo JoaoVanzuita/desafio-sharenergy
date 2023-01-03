@@ -7,7 +7,8 @@ import { UserListItem } from '../components/users/UserListItem'
 import { useAuthContext } from '../shared/contexts'
 import { showApiErrorAlert } from '../shared/functions'
 import { BasePageLayout } from '../shared/layouts/BaseLayout'
-import { randomUsersApi } from '../shared/services/api/random-users'
+import { ResponseError } from '../shared/services/api/axios-config/errors'
+import { RandomUsersService } from '../shared/services/api/random-users'
 import { TRandomUser } from '../shared/types'
 
 export const RandomUsers = () => {
@@ -39,9 +40,8 @@ export const RandomUsers = () => {
   const filteredUsers: TRandomUser[] = search.length > 0
     ? users.filter(user => {
       return (
-        user.name.first.includes(search) ||
-        user.name.last.includes(search) ||
-        user.login.username.includes(search) ||
+        user.name.includes(search) ||
+        user.username.includes(search) ||
         user.email.includes(search)
       )
     })
@@ -49,11 +49,11 @@ export const RandomUsers = () => {
 
   const fetchUsers = useCallback(async(page: number, limit: number) => {
 
-    const result = await randomUsersApi.getRandomUsers(page, limit)
+    const result = await RandomUsersService.getRandomUsers(page, limit)
 
     setIsLoading(false)
 
-    if(result instanceof Error ){
+    if(result instanceof ResponseError ){
       showApiErrorAlert({message: result.message, alertBackground, alertColor})
       return
     }
@@ -88,8 +88,8 @@ export const RandomUsers = () => {
         {isLoading && <CircularProgress/>}
 
         <List component={Paper}>
-          {filteredUsers.length > 0 && filteredUsers.map(user => {
-            return <UserListItem key={user.login.uuid} user={user}/>
+          {filteredUsers.length > 0 && filteredUsers.map((user, index) => {
+            return <UserListItem key={index} user={user}/>
           })}
         </List>
 

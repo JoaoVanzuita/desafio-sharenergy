@@ -1,26 +1,9 @@
 import { Avatar, Box, ListItem, ListItemAvatar, Typography, useMediaQuery, useTheme } from '@mui/material'
 
-type TUserListItemProps = {
-  user: {
-    name: {
-      first: string
-      last: string
-      },
-      email: string
-      login: {
-        uuid: string
-        username: string
+import { TRandomUser } from '../../shared/types'
 
-      },
-      dob: {
-        age: number
-      },
-      picture: {
-        large: string
-        medium: string
-        thumbnail: string
-      }
-  }
+type TUserListItemProps = {
+  user: TRandomUser
 }
 
 export const UserListItem: React.FC<TUserListItemProps> = ({user}) => {
@@ -36,7 +19,7 @@ export const UserListItem: React.FC<TUserListItemProps> = ({user}) => {
             height: smDown ? theme.spacing(6) : theme.spacing(10),
             width: smDown ? theme.spacing(6) : theme.spacing(10)
           }}
-          src={user.picture.large}/>
+          src={user.picture}/>
         </ListItemAvatar>
 
         <Box display='flex' flexDirection='column' width='100%' >
@@ -44,10 +27,10 @@ export const UserListItem: React.FC<TUserListItemProps> = ({user}) => {
           <Box display='flex'  justifyContent='space-between'>
 
             <Typography>
-              {user.name.first} {user.name.last}
+              {user.name}
             </Typography>
             <Typography>
-              {user.dob.age} anos
+              {user.age} anos
             </Typography>
 
           </Box>
@@ -55,7 +38,7 @@ export const UserListItem: React.FC<TUserListItemProps> = ({user}) => {
           <Box display='flex' flexDirection='column' gap={1}>
 
             <Typography>
-              {user.login.username}
+              {user.username}
             </Typography>
             <Typography>
               {user.email}
