@@ -1,7 +1,7 @@
 import { Box,  ListItemButton, ListItemText, useMediaQuery, useTheme } from '@mui/material'
 import { useCallback } from 'react'
 
-import { TClient } from '../types'
+import { TClient } from '../../shared/types'
 
 type TUserListItemProps = {
   client: TClient,

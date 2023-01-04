@@ -2,9 +2,9 @@ import { HttpException, Injectable } from '@nestjs/common'
 import axios from 'axios'
 
 @Injectable()
-export class CatsService {
+export class HttpCatsService {
 
-  api = axios.create({
+  private readonly api = axios.create({
     baseURL: 'https://http.cat'
   })
 
@@ -13,12 +13,12 @@ export class CatsService {
       await this.api.get(statusCode)
 
       return {
-        url:  `https://http.cat/${statusCode}`
+        url: `https://http.cat/${statusCode}`
       }
 
     } catch (err) {
 
-      throw new HttpException('Nenhum gato disponível para esse código de status', 404)
+      throw new HttpException('Nenhum gato disponível para esse código de status', 400)
     }
   }
 }

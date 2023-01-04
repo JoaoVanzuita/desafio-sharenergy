@@ -6,7 +6,7 @@ export interface RawRandomUser {
   email: string
   login: {
     username: string
-
+    uuid: string
   },
   dob: {
     age: number

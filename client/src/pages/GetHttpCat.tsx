@@ -6,7 +6,7 @@ import { numberMaskInput } from '../shared/functions'
 import { useDebounce } from '../shared/hooks'
 import { BasePageLayout } from '../shared/layouts/BaseLayout'
 import { ResponseError } from '../shared/services/api/axios-config/errors'
-import { HttpCatService } from '../shared/services/api/http-cat'
+import { HttpCatsService } from '../shared/services/api/http-cats'
 
 export const GetHttpCat = () => {
   const { debounce } = useDebounce(300)
@@ -19,7 +19,7 @@ export const GetHttpCat = () => {
   const [errorMessage, setErrorMessage] = useState('')
 
   const getHttpCat = useCallback((statusCode: string) => {
-    HttpCatService.getHttpCat(statusCode).then(result => {
+    HttpCatsService.getHttpCat(statusCode).then(result => {
 
       if(result instanceof ResponseError){
 
@@ -65,21 +65,21 @@ export const GetHttpCat = () => {
       <Box display='flex' alignItems='center'>
 
         {!isLoading && !imageUrl &&
-        <Typography variant={smDown ? 'h6' : mdDown ? 'h5' : 'h4'} textAlign='center'>
-        Quer ver um gato aleatório da api Http Cats? <br/>
-        Pesquise um código de status HTTP
-        </Typography>
+          <Typography variant={smDown ? 'h6' : mdDown ? 'h5' : 'h4'} textAlign='center'>
+            Quer ver um gato aleatório da api Http Cats? <br/>
+            Pesquise um código de status HTTP
+          </Typography>
         }
 
         {isLoading && <CircularProgress/>}
 
         {imageUrl &&
-        <Box padding={3} component={Paper}>
-          <img src={imageUrl}
-            width={smDown ? 300 : mdDown ? 400 : 500}
-            height={smDown ? 300 : mdDown ? 400 : 500}
-          />
-        </Box>
+          <Box padding={3} component={Paper}>
+            <img src={imageUrl}
+              width={smDown ? 300 : mdDown ? 400 : 500}
+              height={smDown ? 300 : mdDown ? 400 : 500}
+            />
+          </Box>
         }
 
       </Box>

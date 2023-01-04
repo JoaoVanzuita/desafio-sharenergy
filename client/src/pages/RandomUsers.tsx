@@ -88,8 +88,8 @@ export const RandomUsers = () => {
         {isLoading && <CircularProgress/>}
 
         <List component={Paper}>
-          {filteredUsers.length > 0 && filteredUsers.map((user, index) => {
-            return <UserListItem key={index} user={user}/>
+          {filteredUsers.length > 0 && filteredUsers.map(user => {
+            return <UserListItem key={user.id} user={user}/>
           })}
         </List>
 

@@ -1,6 +1,6 @@
 import { Box, Card, Divider, Typography, useMediaQuery, useTheme } from '@mui/material'
 
-import { TClient } from '../../types'
+import { TClient } from '../../shared/types'
 
 type TClientCardProps = {
   selectedClient: TClient

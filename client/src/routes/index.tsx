@@ -22,7 +22,7 @@ export const AppRoutes = () => {
       {
         icon: 'pets',
         path: '/random-dog',
-        label: 'Random Dog'
+        label: 'Random Dogs'
       },
       {
         icon: 'people',

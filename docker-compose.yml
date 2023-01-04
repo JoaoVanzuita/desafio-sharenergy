@@ -3,12 +3,11 @@ version: '3.8'
 services:
   sharenergy_client:
     container_name: sharenergy_client
-    image: node:lts
+    image: node:lts-alpine
     volumes:
       - ./client:/app
     working_dir: /app
-    command: >
-      sh -c "npm i && npm run start:dev"
+    command: sh -c "npm i && npm run start:dev"
     ports:
       - '5173:5173'
     environment:
@@ -16,12 +15,11 @@ services:
       - VITE_BASE_URL=${VITE_BASE_URL}
   sharenergy_server:
     container_name: sharenergy_server
-    image: node:lts
+    image: node:lts-alpine
     volumes:
       - ./server:/app
     working_dir: /app
-    command: >
-      sh -c "npm i && npm run start:dev"
+    command: sh -c "npm i && npm run start:dev"
     ports:
       - '8080:8080'
     environment:

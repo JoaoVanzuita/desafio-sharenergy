@@ -2,6 +2,7 @@ import { Box, Button, Icon, Paper, TextField, Typography, useMediaQuery, useThem
 
 interface IToolbarProps {
   textSearch?:string
+  textButtonNew?:string
 
   showSearchInput?:boolean
   showButtonNew?: boolean
@@ -23,6 +24,7 @@ interface IToolbarProps {
 
 export const Toolbar: React.FC<IToolbarProps> = ({
   textSearch,
+  textButtonNew = 'novo',
 
   showSearchInput = false,
   showButtonNew = false,
@@ -78,7 +80,7 @@ export const Toolbar: React.FC<IToolbarProps> = ({
           startIcon={<Icon>add</Icon>}>
 
           <Typography variant='button' whiteSpace='nowrap' textOverflow='ellipsis' overflow='hidden'>
-            novo
+            {textButtonNew}
           </Typography>
 
         </Button>}

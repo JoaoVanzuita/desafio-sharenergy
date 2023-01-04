@@ -9,7 +9,6 @@ function App() {
 
   return (
     <AuthProvider>
-
       <AppThemeProvider>
         <Login>
           <DrawerProvider>

@@ -7,6 +7,7 @@ export const rawUserToUser = (rawUsers: RawRandomUser[]): RandomUser[] => {
 
   rawUsers.forEach(user => {
     randomUsers.push({
+      id: user.login.uuid,
       name: `${user.name.first} ${user.name.last}`,
       email: user.email,
       age: user.dob.age,
