@@ -12,25 +12,25 @@ export class ClientsService {
 
   async create(createClientDto: CreateClientDto) {
 
-    return this.clientRepository.create({
+    return await this.clientRepository.create({
       id: uuid(),
       ...createClientDto
     })
   }
 
   async find() {
-    return this.clientRepository.find({})
+    return await this.clientRepository.find({})
   }
 
   async findOne(id: string) {
-    return this.clientRepository.findOne({ id })
+    return await this.clientRepository.findOne({ id })
   }
 
   async update(id: string, updateClientDto: UpdateClientDto) {
-    return this.clientRepository.update({ id }, updateClientDto)
+    return await this.clientRepository.update({ id }, updateClientDto)
   }
 
   async delete(id: string) {
-    return this.clientRepository.delete({ id })
+    return await this.clientRepository.delete({ id })
   }
 }

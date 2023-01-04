@@ -21,6 +21,6 @@ export class UsersController {
 
   @Get('profile')
   findMe(@CurrentUser() user: User) {
-    return this.usersService.findOne(user.id)
+    return this.usersService.findOneById(user.id)
   }
 }

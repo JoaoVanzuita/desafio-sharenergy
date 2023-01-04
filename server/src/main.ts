@@ -12,8 +12,8 @@ async function bootstrap() {
     origin: ['http://localhost:5173'],
     credentials: true,
     methods: ['POST', 'GET', 'PUT', 'DELETE', 'OPTIONS'],
-    exposedHeaders: ['*', 'Authorization'],
-    allowedHeaders: ['*', 'Authorization', 'Content-Type'],
+    exposedHeaders: ['*'],
+    allowedHeaders: ['*'],
   })
   app.use(cookieParser())
 

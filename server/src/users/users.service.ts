@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable, NotFoundException, OnModuleInit } from '@nestjs/common'
 import * as bcrypt from 'bcrypt'
 import { v4 as uuid } from 'uuid'
 
@@ -7,10 +7,27 @@ import { UsersRepository } from './repositories/user.repository'
 import { User } from './schemas/user.schema'
 
 @Injectable()
-export class UsersService {
+export class UsersService implements OnModuleInit {
   constructor(private readonly usersRepository: UsersRepository) { }
 
+  async onModuleInit() {
+
+    const defaultUser: CreateUserDto = {
+      username: process.env.DEFAULT_USER_USERNAME,
+      password: process.env.DEFAULT_USER_PASSWORD
+    }
+
+    const userAlreadyExists = await this.usersRepository.findOne({ username: defaultUser.username })
+    if (userAlreadyExists) return
+
+    await this.create(defaultUser)
+  }
+
   async create(createUserDto: CreateUserDto): Promise<User> {
+
+    const userAlreadyExists = await this.usersRepository.findOne({ username: createUserDto.username })
+    if (userAlreadyExists) throw new BadRequestException('Este nome de usuário já está em uso')
+
     const passwordHash = await bcrypt.hash(createUserDto.password, 10)
 
     const createdUser = await this.usersRepository.create({
@@ -27,10 +44,14 @@ export class UsersService {
   }
 
   async findUserWithPass(username: string): Promise<User> {
-    return this.usersRepository.findUserWithPass({ username })
+    return await this.usersRepository.findUserWithPass({ username })
   }
 
-  async findOne(id: string) {
-    return this.usersRepository.findOne({ id })
+  async findOneById(id: string) {
+    const user = await this.usersRepository.findOne({ id })
+
+    if (!user) throw new NotFoundException('Usuário não encontrado')
+
+    return user
   }
 }

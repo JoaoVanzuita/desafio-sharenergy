@@ -1,9 +1,9 @@
 import { RandomUser } from '../models/RandomUser'
 import { RawRandomUser } from '../models/RawRandomUser'
 
-export const rawUserToUser = (rawUsers: RawRandomUser[]): RandomUser[] => {
+export const rawUsersToUsers = (rawUsers: RawRandomUser[]): RandomUser[] => {
 
-  const randomUsers:RandomUser[] = []
+  const randomUsers: RandomUser[] = []
 
   rawUsers.forEach(user => {
     randomUsers.push({

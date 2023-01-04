@@ -1,7 +1,7 @@
 import { HttpException, Injectable } from '@nestjs/common'
 import axios from 'axios'
 
-import { rawUserToUser } from './mappers/rawUserToUser'
+import { rawUsersToUsers } from './mappers/rawUsesrToUsers'
 import { RandomUser } from './models/RandomUser'
 import { RawRandomUser } from './models/RawRandomUser'
 
@@ -19,7 +19,7 @@ export class RandomUsersService {
 
       const rawUsers: RawRandomUser[] = data.results
 
-      const result: RandomUser[] = rawUserToUser(rawUsers)
+      const result: RandomUser[] = rawUsersToUsers(rawUsers)
 
       return result
     } catch (err) {

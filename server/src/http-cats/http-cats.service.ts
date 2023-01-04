@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
 import axios from 'axios'
 
 @Injectable()
@@ -18,7 +18,7 @@ export class HttpCatsService {
 
     } catch (err) {
 
-      throw new HttpException('Nenhum gato disponível para esse código de status', 400)
+      throw new BadRequestException('Nenhum gato disponível para esse código de status')
     }
   }
 }

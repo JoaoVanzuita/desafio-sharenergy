@@ -37,7 +37,7 @@ export const Login: React.FC<ILoginProps> = ( {children} ) => {
   const formRef = useRef<FormHandles>(null)
   const navigate = useNavigate()
 
-  const [ isLoading, setIsLoading ] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [rememberMe, setRememberMe] = useState(false)
   const [showPass, setShowPass] = useState(false)
 
@@ -48,6 +48,7 @@ export const Login: React.FC<ILoginProps> = ( {children} ) => {
 
     if(!userData) return
 
+    setRememberMe(true)
     formRef.current?.setData(userData)
   }, [isAuthenticated])
 
@@ -62,7 +63,10 @@ export const Login: React.FC<ILoginProps> = ( {children} ) => {
 
       if(rememberMe){
         encryptStorage.setItem('user_credentials', JSON.stringify(userData))
+      }else{
+        encryptStorage.removeItem('user_credentials')
       }
+
       navigate('/')
     })
   }, [theme, rememberMe])

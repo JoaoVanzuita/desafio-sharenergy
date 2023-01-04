@@ -63,7 +63,7 @@ export const DrawerMenu: React.FC<IMenuDrawer> = ({children}) => {
           <Box width='100%' height={theme.spacing(20)} display='flex' alignItems='center' justifyContent='center'>
             <Typography variant='h5'>
 
-              {currentUser?.username.toLowerCase().replace(/(?:^|\s)\S/g, (char:string) => char.toUpperCase())}
+              {currentUser && currentUser?.username.toLowerCase().replace(/(?:^|\s)\S/g, (char:string) => char.toUpperCase())}
 
             </Typography>
           </Box>

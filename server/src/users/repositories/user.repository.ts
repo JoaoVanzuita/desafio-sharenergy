@@ -9,16 +9,16 @@ export class UsersRepository {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) { }
 
   async findOne(filterQuery: FilterQuery<User>): Promise<User> {
-    return this.userModel.findOne(filterQuery)
+    return await this.userModel.findOne(filterQuery)
   }
 
   async findUserWithPass(filterQuery: FilterQuery<User>): Promise<User> {
-    return this.userModel.findOne(filterQuery).select('+password')
+    return await this.userModel.findOne(filterQuery).select('+password')
   }
 
   async create(User: User): Promise<User> {
     const newUser = new this.userModel(User)
 
-    return newUser.save()
+    return await newUser.save()
   }
 }
