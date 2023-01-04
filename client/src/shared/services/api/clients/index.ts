@@ -1,11 +1,11 @@
 import * as createClient from './createClient'
 import * as deleteClient from './deleteClient'
-import * as getAllClients from './getAllClients'
 import * as getClientById from './getClientById'
+import * as getClients from './getClients'
 import * as updateClient from './updateClient'
 
 export const ClientsService = {
-  ...getAllClients,
+  ...getClients,
   ...createClient,
   ...deleteClient,
   ...updateClient,

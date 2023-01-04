@@ -1,8 +1,10 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common'
 import { ApiCookieAuth, ApiTags } from '@nestjs/swagger'
 
 import { ClientsService } from './clients.service'
 import { CreateClientDto } from './dto/create-client.dto'
+import { FindWithFiltersDto } from './dto/find-with-filters-response.dto'
+import { QueryParamsDto } from './dto/query-params.dto'
 import { UpdateClientDto } from './dto/update-client.dto'
 import { Client } from './schemas/client.schema'
 
@@ -17,9 +19,10 @@ export class ClientsController {
     return this.clientsService.create(createClientDto)
   }
 
-  @Get()
-  findAll(): Promise<Client[]> {
-    return this.clientsService.find()
+  @Get('search')
+  findWithFilters(@Query() queryParams: QueryParamsDto): Promise<FindWithFiltersDto> {
+    const { name, page, results } = queryParams
+    return this.clientsService.findWithFilters(name, page, results)
   }
 
   @Get(':id')

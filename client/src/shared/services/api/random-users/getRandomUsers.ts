@@ -3,10 +3,10 @@ import { TRandomUser } from '../../../types'
 import { Api } from '../axios-config'
 import { ResponseError } from '../axios-config/errors'
 
-export const getRandomUsers = async (page: number, limit: number): Promise<TRandomUser[] | ResponseError> => {
+export const getRandomUsers = async (page: number, results: number): Promise<TRandomUser[] | ResponseError> => {
 
   try {
-    const { data } = await Api.get(`random-users?page=${page}&results=${limit}`)
+    const { data } = await Api.get(`random-users?page=${page}&results=${results}`)
 
     return data
   } catch (err) {

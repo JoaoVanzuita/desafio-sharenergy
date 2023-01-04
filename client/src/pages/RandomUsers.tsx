@@ -25,16 +25,16 @@ export const RandomUsers = () => {
 
   useEffect(() => {
     searchParams.set('page', '1')
-    searchParams.set('limit', hdDown ? '4' : '6')
+    searchParams.set('results', hdDown ? '4' : '6')
     setSearchParams(searchParams)
   }, [hdDown])
 
   const page = useMemo(() => {
-    return searchParams.get('page') || '10'
+    return searchParams.get('page') || '1'
   }, [searchParams])
 
-  const limit = useMemo(() => {
-    return searchParams.get('limit') || '1'
+  const results = useMemo(() => {
+    return searchParams.get('results') || '4'
   },[searchParams])
 
   const filteredUsers: TRandomUser[] = search.length > 0
@@ -47,9 +47,9 @@ export const RandomUsers = () => {
     })
     : users
 
-  const fetchUsers = useCallback(async(page: number, limit: number) => {
+  const fetchUsers = useCallback(async(page: number, results: number) => {
 
-    const result = await RandomUsersService.getRandomUsers(page, limit)
+    const result = await RandomUsersService.getRandomUsers(page, results)
 
     setIsLoading(false)
 
@@ -59,11 +59,11 @@ export const RandomUsers = () => {
     }
 
     setUsers(result)
-  },[])
+  },[searchParams])
 
   useEffect(() => {
-    fetchUsers(Number(page), Number(limit))
-  },[page, limit])
+    fetchUsers(Number(page), Number(results))
+  },[page, results])
 
   const handleLogout = useCallback(() => {
     signout().then(result => {
@@ -93,12 +93,18 @@ export const RandomUsers = () => {
           })}
         </List>
 
-        {!isLoading && filteredUsers.length > 0 && <Pagination page={Number(page)}
-          onChange={(_, newPage) => {
-            searchParams.set('page', newPage.toString())
-            setSearchParams(searchParams)
-            setSearch('')
-          }} count={Math.ceil(5000 / Number(limit))}/>}
+        {!isLoading && filteredUsers.length > 0 &&
+          <Box paddingTop={2}>
+            <Pagination page={Number(page)}
+              count={Math.ceil(5000 / Number(results))}
+              onChange={(_, newPage) => {
+                searchParams.set('page', newPage.toString())
+                setSearchParams(searchParams)
+                setSearch('')
+              }}
+            />
+          </Box>
+        }
 
         {!isLoading && !filteredUsers.length &&
           <Typography variant='h5'>

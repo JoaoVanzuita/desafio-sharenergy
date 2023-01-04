@@ -3,10 +3,15 @@ import { TClient } from '../../../types'
 import { Api } from '../axios-config'
 import { ResponseError } from '../axios-config/errors'
 
-export const getAllClients = async (): Promise<TClient[] | ResponseError> => {
+interface IGetClientsResponse {
+  clients: TClient[],
+  total: number
+}
+
+export const getClients = async (name: string, page:number, results:number): Promise<IGetClientsResponse | ResponseError> => {
 
   try {
-    const { data } = await Api.get('/clients')
+    const { data } = await Api.get(`/clients/search?page=${page}&results=${results}&name=${name}`)
 
     return data
   }catch(err){

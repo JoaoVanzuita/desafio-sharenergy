@@ -5,6 +5,7 @@ interface IToolbarProps {
   textButtonNew?:string
 
   showSearchInput?:boolean
+  responsiveSearchInput?:boolean
   showButtonNew?: boolean
   showButtonSave?: boolean
   showButtonDelete?: boolean
@@ -27,6 +28,7 @@ export const Toolbar: React.FC<IToolbarProps> = ({
   textButtonNew = 'novo',
 
   showSearchInput = false,
+  responsiveSearchInput = false,
   showButtonNew = false,
   showButtonSave = false,
   showButtonEdit = false,
@@ -46,6 +48,7 @@ export const Toolbar: React.FC<IToolbarProps> = ({
 }) => {
   const theme = useTheme()
   const smUp = useMediaQuery(theme.breakpoints.up('sm'))
+  const mdDown = useMediaQuery(theme.breakpoints.down('md'))
 
   return(
     <Box
@@ -65,7 +68,7 @@ export const Toolbar: React.FC<IToolbarProps> = ({
         gap={1}
         alignItems='center'
       >
-        {showSearchInput && <TextField
+        {(!mdDown || !responsiveSearchInput) && showSearchInput && <TextField
           size='small'
           label={'Pesquisar'}
           value={textSearch}

@@ -18,8 +18,11 @@ export class ClientsService {
     })
   }
 
-  async find() {
-    return await this.clientRepository.find({})
+  async findWithFilters(name: string, page: number, results: number) {
+
+    if(!name) name = ''
+
+    return await this.clientRepository.findWithFilters(name, page, results)
   }
 
   async findOne(id: string) {

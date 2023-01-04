@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { FilterQuery, Model } from 'mongoose'
 
@@ -12,8 +12,21 @@ export class ClientsRepository {
     return this.clientModel.findOne(filterQuery)
   }
 
-  async find(filterQuery: FilterQuery<Client>): Promise<Client[]> {
-    return this.clientModel.find(filterQuery)
+  async findWithFilters(name: string, page: number, results: number) {
+
+    const total = (await this.clientModel.find({ name: { $regex: name } })).length
+
+    if (total < 1) throw new NotFoundException('Nenhum cliente encontrado')
+
+    const clients = await this.clientModel
+      .find({ name: { $regex: name } })
+      .limit(results)
+      .skip((page - 1) * results)
+
+    return {
+      clients,
+      total
+    }
   }
 
   async create(client: Client): Promise<Client> {

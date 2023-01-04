@@ -1,15 +1,19 @@
 import { Environment } from '../../../environment'
-import { TRandomDogResponse } from '../../../types'
 import { Api } from '../axios-config'
 import { ResponseError } from '../axios-config/errors'
 
-export const getRandomDog = async (): Promise<TRandomDogResponse | ResponseError> => {
+interface IRandomDogResponse {
+  mediaType: string
+  url: string
+}
+
+export const getRandomDog = async (): Promise<IRandomDogResponse | ResponseError> => {
 
   try {
     const { data } = await Api.get('/random-dogs')
 
     return data
-  }catch(err){
+  } catch (err) {
 
     if (err instanceof ResponseError) {
       return err

@@ -1,11 +1,12 @@
-import { Alert, Box, CircularProgress, List, Paper, Snackbar, Typography, useMediaQuery, useTheme } from '@mui/material'
-import { useCallback, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Alert, Box, CircularProgress, List, Pagination, Paper, Snackbar, Typography, useMediaQuery, useTheme } from '@mui/material'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import Swal from 'sweetalert2'
 
 import { ClientCard, ClientListItem, Toolbar } from '../components'
 import { useAuthContext } from '../shared/contexts'
 import { showApiErrorAlert } from '../shared/functions'
+import { useDebounce } from '../shared/hooks'
 import { BasePageLayout } from '../shared/layouts/BaseLayout'
 import { ResponseError } from '../shared/services/api/axios-config/errors'
 import { ClientsService } from '../shared/services/api/clients'
@@ -20,14 +21,36 @@ export const ManageClients = () => {
   const alertColor = theme.palette.mode === 'light' ? '#000000' : '#ffffff'
   const navigate = useNavigate()
   const { signout } = useAuthContext()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const { debounce } = useDebounce(1000)
 
   const [isLoading, setIsLoading] = useState(true)
   const [openSuccessAlert, setOpenSuccessAlert] = useState(false)
   const [clients, setClients] = useState<TClient[]>([])
   const [selectedClient, setSelectedClient] = useState<TClient | null>(null)
+  const [ total, setTotal ] = useState(0)
 
-  const fetchClients = useCallback(async () => {
-    const result = await ClientsService.getAllClients()
+  useEffect(() => {
+    searchParams.set('page', '1')
+    searchParams.set('results',  smDown ? '4' : hdDown ? '6' : '8')
+    searchParams.set('name', '')
+    setSearchParams(searchParams)
+  }, [smDown, hdDown])
+
+  const page = useMemo(() => {
+    return searchParams.get('page') || '1'
+  }, [searchParams])
+
+  const results = useMemo(() => {
+    return searchParams.get('results') || '4'
+  },[searchParams])
+
+  const nameSearch = useMemo(() => {
+    return searchParams.get('name') || ''
+  },[searchParams])
+
+  const fetchClients = useCallback(async (nameSearch:string, page:number, results:number) => {
+    const result = await ClientsService.getClients(nameSearch, page, results)
 
     setIsLoading(false)
 
@@ -36,12 +59,16 @@ export const ManageClients = () => {
       return
     }
 
-    setClients(result)
+    setClients(result.clients)
+    setTotal(result.total)
   }, [])
 
   useEffect(() => {
-    fetchClients()
-  }, [theme])
+    setIsLoading(true)
+    debounce(() => {
+      fetchClients(nameSearch, Number(page), Number(results))
+    })
+  }, [theme, searchParams])
 
   const selectClient = (id: string) => {
     const client = clients.find(client => client.id === id)
@@ -101,10 +128,10 @@ export const ManageClients = () => {
           return
         }
         setOpenSuccessAlert(true)
-        fetchClients()
+        fetchClients(nameSearch, Number(page), Number(results))
       }
     })
-  },[selectedClient, theme])
+  },[selectedClient, theme, searchParams])
 
   const handleLogout = useCallback(() => {
     signout().then(result => {
@@ -117,11 +144,17 @@ export const ManageClients = () => {
   return(
     <BasePageLayout title='Gerenciar clientes' toolbar={
       <Toolbar
+        showSearchInput
+        responsiveSearchInput
         showButtonNew
         showButtonEdit
         showButtonDelete
         showButtonExit
 
+        onChangeTextSearch={text => {
+          searchParams.set('name', text)
+          setSearchParams(searchParams)
+        }}
         onClickButtonNew={() => navigate('/gerenciar-clientes/novo')}
         onClickButtonEdit={handleClickButtonEdit}
         onClickButtonDelete={handleClickButtonDelete}
@@ -175,6 +208,15 @@ export const ManageClients = () => {
               })}
 
             </List>
+            <Box paddingTop={2}>
+              <Pagination page={Number(page)}
+                count={Math.ceil(total / Number(results))}
+                onChange={(_, newPage) => {
+                  searchParams.set('page', newPage.toString())
+                  setSearchParams(searchParams)
+                }}
+              />
+            </Box>
 
           </Box>
           <Box padding={smDown ? 2 : 5} display='flex' alignItems='center' flexDirection='column' >
