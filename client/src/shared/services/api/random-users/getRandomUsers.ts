@@ -8,7 +8,7 @@ export const getRandomUsers = async (page: number, results: number): Promise<TRa
   try {
     const { data } = await Api.get(`random-users?page=${page}&results=${results}`)
 
-    return data
+    return data.users
   } catch (err) {
 
     if (err instanceof ResponseError) {

@@ -2,6 +2,8 @@ import { HttpException, Injectable } from '@nestjs/common'
 import axios from 'axios'
 import * as mime from 'mime-types'
 
+import { DefaultResponseDto } from './dto/response/default-response.dto'
+
 @Injectable()
 export class RandomDogsService {
 
@@ -9,16 +11,16 @@ export class RandomDogsService {
     baseURL: 'https://random.dog/woof'
   })
 
-  async getRandomDog(){
-    try{
+  async getRandomDog(): Promise<DefaultResponseDto> {
+    try {
       const { data } = await this.api.get('')
 
       return {
-        mediaType: mime.lookup(data),
+        mediaType: mime.lookup(data).toString(),
         url: `https://random.dog/${data}`
       }
 
-    }catch(err){
+    } catch (err) {
       throw new HttpException(err.message, err.statusCode)
     }
   }

@@ -1,9 +1,11 @@
-import { Controller, HttpCode, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common'
-import { ApiCookieAuth, ApiTags } from '@nestjs/swagger'
+import { Body, Controller, HttpCode, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common'
+import { ApiCookieAuth, ApiExtraModels, ApiResponse, ApiTags, getSchemaPath } from '@nestjs/swagger'
 import { Response } from 'express'
 
 import { AuthService } from './auth.service'
 import { IsPublic } from './decorators/is-public.decorator'
+import { LoginDto } from './dto/request/login.dto'
+import { LoginResponseDto } from './dto/response/login-response.dto'
 import { LocalAuthGuard } from './guards/local-auth.guard'
 import { AuthRequest } from './models/AuthRequest'
 
@@ -16,7 +18,14 @@ export class AuthController {
   @IsPublic()
   @HttpCode(HttpStatus.OK)
   @UseGuards(LocalAuthGuard)
-  async login(@Req() req: AuthRequest, @Res() res: Response) {
+  @ApiExtraModels(LoginResponseDto)
+  @ApiResponse({
+    status: 200,
+    schema: {
+      $ref: getSchemaPath(LoginResponseDto),
+    },
+  })
+  async login(@Req() req: AuthRequest, @Res() res: Response, @Body() _: LoginDto) {
 
     const accessToken = await this.auth.login(req.user)
 

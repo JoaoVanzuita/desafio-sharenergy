@@ -1,6 +1,7 @@
 import { Controller, Get, Param } from '@nestjs/common'
-import { ApiCookieAuth, ApiTags } from '@nestjs/swagger'
+import { ApiCookieAuth, ApiExtraModels, ApiResponse, ApiTags, getSchemaPath } from '@nestjs/swagger'
 
+import { DefaultHttpCatsResponseDto } from './dto/response/default-http-cats-response.dto'
 import { HttpCatsService } from './http-cats.service'
 
 @Controller('http-cats')
@@ -10,6 +11,13 @@ export class HttpCatsController {
   constructor(private readonly catsService: HttpCatsService) { }
 
   @Get(':statusCode')
+  @ApiExtraModels(DefaultHttpCatsResponseDto)
+  @ApiResponse({
+    status: 200,
+    schema: {
+      $ref: getSchemaPath(DefaultHttpCatsResponseDto),
+    },
+  })
   getHttpCat(@Param('statusCode') statusCode: string) {
 
     return this.catsService.getHttpCat(statusCode)

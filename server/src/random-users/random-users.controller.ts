@@ -1,8 +1,8 @@
 import { Controller, Get, Query } from '@nestjs/common'
-import { ApiCookieAuth, ApiTags } from '@nestjs/swagger'
+import { ApiCookieAuth, ApiExtraModels, ApiResponse, ApiTags, getSchemaPath } from '@nestjs/swagger'
 
-import { QueryParamsDto } from './dto/query-params.dto'
-import { RandomUser } from './models/RandomUser'
+import { QueryParamsDto } from './dto/request/query-params.dto'
+import { DefaultRandomUsersResponseDto } from './dto/response/default-random-users-response.dto'
 import { RandomUsersService } from './random-users.service'
 
 @Controller('random-users')
@@ -12,7 +12,14 @@ export class RandomUsersController {
   constructor(private readonly randomUsersService: RandomUsersService) { }
 
   @Get()
-  getRandomUsers(@Query() queryParams: QueryParamsDto): Promise<RandomUser[]> {
+  @ApiExtraModels(DefaultRandomUsersResponseDto)
+  @ApiResponse({
+    status: 200,
+    schema: {
+      $ref: getSchemaPath(DefaultRandomUsersResponseDto),
+    },
+  })
+  getRandomUsers(@Query() queryParams: QueryParamsDto) {
     const { page, results } = queryParams
 
     return this.randomUsersService.getRandomUsers(page, results)

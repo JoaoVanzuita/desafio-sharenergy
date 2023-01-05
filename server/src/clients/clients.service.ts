@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { v4 as uuid } from 'uuid'
 
-import { CreateClientDto } from './dto/create-client.dto'
-import { UpdateClientDto } from './dto/update-client.dto'
+import { ClientDto } from './dto/request/client.dto'
+import { DefaultClientsResponseDto } from './dto/response/default-clients-response.dto'
+import { FindWithFiltersResponseDto } from './dto/response/find-with-filters-response.dto'
 import { ClientsRepository } from './repositories/clients.repository'
 
 @Injectable()
@@ -10,7 +11,7 @@ export class ClientsService {
 
   constructor(private readonly clientRepository: ClientsRepository) { }
 
-  async create(createClientDto: CreateClientDto) {
+  async create(createClientDto: ClientDto): Promise<DefaultClientsResponseDto> {
 
     return await this.clientRepository.create({
       id: uuid(),
@@ -18,22 +19,29 @@ export class ClientsService {
     })
   }
 
-  async findWithFilters(name: string, page: number, results: number) {
+  async findWithFilters(name: string, page: number, results: number): Promise<FindWithFiltersResponseDto> {
 
-    if(!name) name = ''
+    if (!name) name = ''
 
     return await this.clientRepository.findWithFilters(name, page, results)
   }
 
-  async findOne(id: string) {
-    return await this.clientRepository.findOne({ id })
+  async findOne(id: string): Promise<DefaultClientsResponseDto> {
+    const client = await this.clientRepository.findOne({ id })
+
+    if (!client) throw new NotFoundException('Cliente não encontrado')
+
+    return client
   }
 
-  async update(id: string, updateClientDto: UpdateClientDto) {
+  async update(id: string, updateClientDto: ClientDto): Promise<DefaultClientsResponseDto> {
+
     return await this.clientRepository.update({ id }, updateClientDto)
+
   }
 
-  async delete(id: string) {
+  async delete(id: string): Promise<DefaultClientsResponseDto> {
+
     return await this.clientRepository.delete({ id })
   }
 }

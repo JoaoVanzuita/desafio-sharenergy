@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, NotFoundException, OnModuleInit } from
 import * as bcrypt from 'bcrypt'
 import { v4 as uuid } from 'uuid'
 
-import { CreateUserDto } from './dto/create-user.dto'
+import { CreateUserDto } from './dto/request/create-user.dto'
 import { UsersRepository } from './repositories/user.repository'
 import { User } from './schemas/user.schema'
 
@@ -47,11 +47,14 @@ export class UsersService implements OnModuleInit {
     return await this.usersRepository.findUserWithPass({ username })
   }
 
-  async findOneById(id: string) {
+  async getProfile(id: string) {
     const user = await this.usersRepository.findOne({ id })
 
     if (!user) throw new NotFoundException('Usuário não encontrado')
 
-    return user
+    return {
+      id: user.id,
+      username: user.username
+    }
   }
 }

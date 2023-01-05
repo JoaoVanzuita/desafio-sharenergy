@@ -10,6 +10,7 @@ export class QueryParamsDto {
   @IsNotEmpty()
   @IsNumberString()
     page: number
+    
   @ApiProperty()
   @IsNotEmpty()
   @IsNumberString()

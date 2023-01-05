@@ -1,12 +1,11 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common'
-import { ApiCookieAuth, ApiTags } from '@nestjs/swagger'
+import { ApiCookieAuth, ApiExtraModels, ApiResponse, ApiTags, getSchemaPath } from '@nestjs/swagger'
 
 import { ClientsService } from './clients.service'
-import { CreateClientDto } from './dto/create-client.dto'
-import { FindWithFiltersDto } from './dto/find-with-filters-response.dto'
-import { QueryParamsDto } from './dto/query-params.dto'
-import { UpdateClientDto } from './dto/update-client.dto'
-import { Client } from './schemas/client.schema'
+import { ClientDto } from './dto/request/client.dto'
+import { QueryParamsDto } from './dto/request/query-params.dto'
+import { DefaultClientsResponseDto } from './dto/response/default-clients-response.dto'
+import { FindWithFiltersResponseDto } from './dto/response/find-with-filters-response.dto'
 
 @Controller('clients')
 @ApiTags('Clientes')
@@ -15,27 +14,63 @@ export class ClientsController {
   constructor(private readonly clientsService: ClientsService) { }
 
   @Post()
-  create(@Body() createClientDto: CreateClientDto): Promise<Client> {
+  @ApiExtraModels(DefaultClientsResponseDto)
+  @ApiResponse({
+    status: 201,
+    schema: {
+      $ref: getSchemaPath(DefaultClientsResponseDto),
+    },
+  })
+  create(@Body() createClientDto: ClientDto) {
     return this.clientsService.create(createClientDto)
   }
 
   @Get('search')
-  findWithFilters(@Query() queryParams: QueryParamsDto): Promise<FindWithFiltersDto> {
+  @ApiExtraModels(FindWithFiltersResponseDto)
+  @ApiResponse({
+    status: 200,
+    schema: {
+      $ref: getSchemaPath(FindWithFiltersResponseDto),
+    },
+  })
+  findWithFilters(@Query() queryParams: QueryParamsDto) {
     const { name, page, results } = queryParams
     return this.clientsService.findWithFilters(name, page, results)
   }
 
+
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<Client> {
+  @ApiExtraModels(DefaultClientsResponseDto)
+  @ApiResponse({
+    status: 200,
+    schema: {
+      $ref: getSchemaPath(DefaultClientsResponseDto),
+    },
+  })
+  findOne(@Param('id') id: string) {
     return this.clientsService.findOne(id)
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateClientDto: UpdateClientDto) {
+  @ApiExtraModels(DefaultClientsResponseDto)
+  @ApiResponse({
+    status: 200,
+    schema: {
+      $ref: getSchemaPath(DefaultClientsResponseDto),
+    },
+  })
+  update(@Param('id') id: string, @Body() updateClientDto: ClientDto) {
     return this.clientsService.update(id, updateClientDto)
   }
 
   @Delete(':id')
+  @ApiExtraModels(DefaultClientsResponseDto)
+  @ApiResponse({
+    status: 200,
+    schema: {
+      $ref: getSchemaPath(DefaultClientsResponseDto),
+    },
+  })
   delete(@Param('id') id: string) {
     return this.clientsService.delete(id)
   }

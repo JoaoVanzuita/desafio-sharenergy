@@ -1,6 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
 import axios from 'axios'
 
+import { DefaultHttpCatsResponseDto } from './dto/response/default-http-cats-response.dto'
+
 @Injectable()
 export class HttpCatsService {
 
@@ -8,7 +10,7 @@ export class HttpCatsService {
     baseURL: 'https://http.cat'
   })
 
-  async getHttpCat(statusCode: string) {
+  async getHttpCat(statusCode: string): Promise<DefaultHttpCatsResponseDto> {
     try {
       await this.api.get(statusCode)
 
