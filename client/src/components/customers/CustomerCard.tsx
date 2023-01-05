@@ -1,12 +1,12 @@
 import { Box, Card, Divider, Typography, useMediaQuery, useTheme } from '@mui/material'
 
-import { TClient } from '../../shared/types'
+import { TCustomer } from '../../shared/types'
 
-type TClientCardProps = {
-  selectedClient: TClient
+type TCustomerCardProps = {
+  selectedCustomer: TCustomer
 }
 
-export const ClientCard: React.FC<TClientCardProps> = ({selectedClient}) => {
+export const CustomerCard: React.FC<TCustomerCardProps> = ({selectedCustomer}) => {
   const theme = useTheme()
   const mobile = useMediaQuery(theme.breakpoints.down(450))
   const smDown = useMediaQuery(theme.breakpoints.down('sm'))
@@ -32,27 +32,27 @@ export const ClientCard: React.FC<TClientCardProps> = ({selectedClient}) => {
             variant={mdDown ? 'body2' : 'body1'}
             paddingBottom={2}
           >
-            Nome: {selectedClient.name}
+            Nome: {selectedCustomer.name}
           </Typography>
 
           <Typography whiteSpace='nowrap' textOverflow='ellipsis' overflow='hidden'
             variant={mdDown ? 'body2' : 'body1'}
             paddingBottom={2}
           >
-            Email: {selectedClient.email}
+            Email: {selectedCustomer.email}
           </Typography>
 
           <Typography whiteSpace='nowrap' textOverflow='ellipsis' overflow='hidden'
             variant={mdDown ? 'body2' : 'body1'}
             paddingBottom={2}
           >
-            Telefone: {selectedClient.phone}
+            Telefone: {selectedCustomer.phone}
           </Typography>
 
           <Typography whiteSpace='nowrap' textOverflow='ellipsis' overflow='hidden'
             variant={mdDown ? 'body2' : 'body1'}
           >
-            CPF: {selectedClient.cpf}
+            CPF: {selectedCustomer.cpf}
           </Typography>
 
         </Box>
@@ -72,20 +72,20 @@ export const ClientCard: React.FC<TClientCardProps> = ({selectedClient}) => {
             variant={mdDown ? 'body2' : 'body1'}
             paddingBottom={3}
           >
-            Cidade: {selectedClient.address.city}
+            Cidade: {selectedCustomer.address.city}
           </Typography>
 
           <Typography whiteSpace='nowrap' textOverflow='ellipsis' overflow='hidden'
             variant={mdDown ? 'body2' : 'body1'}
             paddingBottom={3}
           >
-            Rua: {selectedClient.address.street}
+            Rua: {selectedCustomer.address.street}
           </Typography>
 
           <Typography whiteSpace='nowrap' textOverflow='ellipsis' overflow='hidden'
             variant={mdDown ? 'body2' : 'body1'}
           >
-            Número: {selectedClient.address.number}
+            Número: {selectedCustomer.address.number}
           </Typography>
 
         </Box>

@@ -1,15 +1,15 @@
 import { Environment } from '../../../environment'
-import { TClient } from '../../../types'
+import { TCustomer } from '../../../types'
 import { Api } from '../axios-config'
 import { ResponseError } from '../axios-config/errors'
 
-export const deleteClient = async (id: string): Promise<TClient | ResponseError> => {
+export const deleteCustomer = async (id: string): Promise<TCustomer | ResponseError> => {
 
   try {
-    const { data } = await Api.delete(`/clients/${id}`)
+    const { data } = await Api.delete(`customers/${id}`)
 
     return data
-  }catch(err){
+  } catch (err) {
 
     if (err instanceof ResponseError) {
       return err

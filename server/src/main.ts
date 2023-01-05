@@ -13,7 +13,7 @@ async function bootstrap() {
     credentials: true,
     methods: ['POST', 'GET', 'PUT', 'DELETE', 'OPTIONS'],
     exposedHeaders: ['*'],
-    allowedHeaders: ['*'],
+    allowedHeaders: ['*', 'Content-Type'],
   })
   app.use(cookieParser())
 

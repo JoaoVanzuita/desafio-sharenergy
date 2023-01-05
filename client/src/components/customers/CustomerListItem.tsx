@@ -1,21 +1,21 @@
 import { Box,  ListItemButton, ListItemText, useMediaQuery, useTheme } from '@mui/material'
 import { useCallback } from 'react'
 
-import { TClient } from '../../shared/types'
+import { TCustomer } from '../../shared/types'
 
-type TUserListItemProps = {
-  client: TClient,
+type TCustomerListItemProps = {
+  customer: TCustomer,
   selected: boolean,
-  onClickCLientListItem: (id: string) => void
+  onClickCustomerListItem: (id: string) => void
 }
-export const ClientListItem: React.FC<TUserListItemProps> = ({client, onClickCLientListItem, selected}) => {
+export const CustomerListItem: React.FC<TCustomerListItemProps> = ({customer, onClickCustomerListItem, selected}) => {
   const theme = useTheme()
   const smDown = useMediaQuery(theme.breakpoints.down('sm'))
   const mdDown = useMediaQuery(theme.breakpoints.down('md'))
 
   const handleOnClickListItem = useCallback(() => {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    onClickCLientListItem(client.id!)
+    onClickCustomerListItem(customer.id!)
   },[])
 
   return(
@@ -30,7 +30,7 @@ export const ClientListItem: React.FC<TUserListItemProps> = ({client, onClickCLi
           whiteSpace: 'nowrap',
           overflow: 'hidden',
           textOverflow: 'ellipsis'
-        } }} primary={client.name}/>
+        } }} primary={customer.name}/>
       </Box>
     </ListItemButton>
   )

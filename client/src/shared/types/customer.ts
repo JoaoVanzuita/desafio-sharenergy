@@ -1,4 +1,4 @@
-export type TClient = {
+export type TCustomer = {
   id?: string
   name: string
   email: string

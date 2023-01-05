@@ -10,8 +10,8 @@ class Address {
     number: number
 }
 
-@Schema( {collection: 'clients'} )
-export class Client {
+@Schema( {collection: 'customers'} )
+export class Customer {
 
   @Prop()
     id: string
@@ -27,6 +27,6 @@ export class Client {
     address: Address
 }
 
-export type ClientDocument = Client & Document
+export type CustomerDocument = Customer & Document
 
-export const ClientSchema = SchemaFactory.createForClass(Client)
+export const CustomerSchema = SchemaFactory.createForClass(Customer)

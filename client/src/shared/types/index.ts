@@ -1,3 +1,3 @@
-export * from './client'
+export * from './customer'
 export * from './randomUser'
 export * from './user'

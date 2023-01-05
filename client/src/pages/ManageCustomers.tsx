@@ -3,14 +3,14 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import Swal from 'sweetalert2'
 
-import { ClientCard, ClientListItem, Toolbar } from '../components'
+import { CustomerCard, CustomerListItem, Toolbar } from '../components'
 import { useAuthContext } from '../shared/contexts'
 import { showApiErrorAlert } from '../shared/functions'
 import { useDebounce } from '../shared/hooks'
 import { BasePageLayout } from '../shared/layouts/BaseLayout'
 import { ResponseError } from '../shared/services/api/axios-config/errors'
-import { ClientsService } from '../shared/services/api/clients'
-import { TClient } from '../shared/types'
+import { CustomersService } from '../shared/services/api/customers'
+import { TCustomer } from '../shared/types'
 
 export const ManageClients = () => {
   const theme = useTheme()
@@ -26,8 +26,8 @@ export const ManageClients = () => {
 
   const [isLoading, setIsLoading] = useState(true)
   const [openSuccessAlert, setOpenSuccessAlert] = useState(false)
-  const [clients, setClients] = useState<TClient[]>([])
-  const [selectedClient, setSelectedClient] = useState<TClient | null>(null)
+  const [customers, setCustomers] = useState<TCustomer[]>([])
+  const [selectedCustomer, setSelectedCustomer] = useState<TCustomer | null>(null)
   const [ total, setTotal ] = useState(0)
 
   useEffect(() => {
@@ -49,8 +49,8 @@ export const ManageClients = () => {
     return searchParams.get('name') || ''
   },[searchParams])
 
-  const fetchClients = useCallback(async (nameSearch:string, page:number, results:number) => {
-    const result = await ClientsService.getClients(nameSearch, page, results)
+  const fetchCustomers = useCallback(async (nameSearch:string, page:number, results:number) => {
+    const result = await CustomersService.getCustomers(nameSearch, page, results)
 
     setIsLoading(false)
 
@@ -59,30 +59,30 @@ export const ManageClients = () => {
       return
     }
 
-    setClients(result.clients)
+    setCustomers(result.customers)
     setTotal(result.total)
   }, [])
 
   useEffect(() => {
     setIsLoading(true)
     debounce(() => {
-      fetchClients(nameSearch, Number(page), Number(results))
+      fetchCustomers(nameSearch, Number(page), Number(results))
     })
   }, [theme, searchParams])
 
-  const selectClient = (id: string) => {
-    const client = clients.find(client => client.id === id)
+  const selectCustomer = (id: string) => {
+    const client = customers.find(client => client.id === id)
 
     if(!client) {
       return
     }
 
-    setSelectedClient(client)
+    setSelectedCustomer(client)
   }
 
   const handleClickButtonEdit = () => {
-    if(selectedClient){
-      navigate(`/gerenciar-clientes/${selectedClient.id}`)
+    if(selectedCustomer){
+      navigate(`/gerenciar-clientes/${selectedCustomer.id}`)
       return
     }
     Swal.fire({
@@ -95,7 +95,7 @@ export const ManageClients = () => {
   }
 
   const handleClickButtonDelete = useCallback(async () => {
-    if(!selectedClient){
+    if(!selectedCustomer){
       Swal.fire({
         titleText: 'Nenhum cliente selecionado',
         text: 'Selecione um cliente para excluir',
@@ -121,17 +121,17 @@ export const ManageClients = () => {
       if(result.isConfirmed){
 
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const result = await ClientsService.deleteClient(selectedClient.id!)
+        const result = await CustomersService.deleteCustomer(selectedCustomer.id!)
 
         if(result instanceof Error){
           showApiErrorAlert({ message: result.message, alertBackground, alertColor })
           return
         }
         setOpenSuccessAlert(true)
-        fetchClients(nameSearch, Number(page), Number(results))
+        fetchCustomers(nameSearch, Number(page), Number(results))
       }
     })
-  },[selectedClient, theme, searchParams])
+  },[selectedCustomer, theme, searchParams])
 
   const handleLogout = useCallback(() => {
     signout().then(result => {
@@ -171,7 +171,7 @@ export const ManageClients = () => {
         <CircularProgress/>
       </Box>}
 
-      {!isLoading && clients.length == 0 && <Box display='flex' justifyContent='center' alignItems='center'>
+      {!isLoading && customers.length == 0 && <Box display='flex' justifyContent='center' alignItems='center'>
 
         <Typography variant={smDown ? 'h6' : 'h5'}>
           Nenhum cliente encontrado
@@ -184,7 +184,7 @@ export const ManageClients = () => {
         alignContent='center'
       >
 
-        {!isLoading && clients.length > 0 && <>
+        {!isLoading && customers.length > 0 && <>
           <Box padding={smDown ? 2 : 5} display='flex' flexDirection='column' alignItems='center' >
             <Typography variant={smDown ? 'h5' : 'h4'} paddingBottom={3}>
             Clientes
@@ -196,13 +196,13 @@ export const ManageClients = () => {
                 maxHeight: mdDown ? 250 : 600,
               }}
             >
-              {clients.length > 0 && clients.map(client => {
+              {customers.length > 0 && customers.map(client => {
                 return (
-                  <ClientListItem
-                    selected={client.id === selectedClient?.id}
+                  <CustomerListItem
+                    selected={client.id === selectedCustomer?.id}
                     key={client.id}
-                    client={client}
-                    onClickCLientListItem={selectClient}
+                    customer={client}
+                    onClickCustomerListItem={selectCustomer}
                   />
                 )
               })}
@@ -221,14 +221,14 @@ export const ManageClients = () => {
           </Box>
           <Box padding={smDown ? 2 : 5} display='flex' alignItems='center' flexDirection='column' >
 
-            {selectedClient && <Typography paddingBottom={3}
+            {selectedCustomer && <Typography paddingBottom={3}
               variant={smDown ? 'h5' : 'h4'}>
             Cliente selecionado
             </Typography>}
 
-            {selectedClient && <ClientCard selectedClient={selectedClient} />}
+            {selectedCustomer && <CustomerCard selectedCustomer={selectedCustomer} />}
 
-            {!selectedClient && <Typography variant={smDown ? 'h6' : 'h5'}>
+            {!selectedCustomer && <Typography variant={smDown ? 'h6' : 'h5'}>
               Nenhum cliente selecionado
             </Typography>}
 

@@ -10,10 +10,10 @@ import { FormTextField, IFormErrors } from '../components/forms'
 import { numberMaskInput, showApiErrorAlert } from '../shared/functions'
 import { BasePageLayout } from '../shared/layouts/BaseLayout'
 import { ResponseError } from '../shared/services/api/axios-config/errors'
-import { ClientsService } from '../shared/services/api/clients'
-import { TClient } from '../shared/types'
+import { CustomersService } from '../shared/services/api/customers'
+import { TCustomer } from '../shared/types'
 
-type TFormData = Omit<TClient, 'id'>
+type TFormData = Omit<TCustomer, 'id'>
 
 const formValidationSchema: yup.SchemaOf<TFormData> = yup.object().shape({
   name: yup.string().min(3).max(20).required(),
@@ -47,7 +47,7 @@ export const SaveClient = () => {
       return
     }
 
-    ClientsService.getClientById(id).then(result => {
+    CustomersService.getCustomerById(id).then(result => {
       setIsLoading(false)
 
       if(result instanceof ResponseError ){
@@ -59,8 +59,8 @@ export const SaveClient = () => {
     })
   }, [])
 
-  const createClient = useCallback((clientData: TFormData) => {
-    ClientsService.createClient(clientData).then(result => {
+  const createClient = useCallback((customerData: TFormData) => {
+    CustomersService.createCustomer(customerData).then(result => {
       setIsLoading(false)
 
       if(result instanceof ResponseError){
@@ -72,10 +72,10 @@ export const SaveClient = () => {
     })
   },[theme])
 
-  const updateClient = useCallback((id: string, clientData: TFormData) => {
-    ClientsService.updateClient({
+  const updateClient = useCallback((id: string, customerData: TFormData) => {
+    CustomersService.updateCustomer({
       id,
-      ...clientData
+      ...customerData
     }).then(result => {
       setIsLoading(false)
 

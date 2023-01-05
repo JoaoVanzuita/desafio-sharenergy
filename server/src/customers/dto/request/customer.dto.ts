@@ -4,7 +4,7 @@ import { IsEmail, IsNotEmpty, IsNotEmptyObject, IsNumberString, IsPhoneNumber, L
 
 import { AddressDto } from './address.dto'
 
-export class ClientDto {
+export class CustomerDto {
 
   @ApiProperty()
   @IsNotEmpty({ message: 'Nome é obrigatório' })

@@ -12,7 +12,7 @@ class Address {
     number: number
 }
 
-export class DefaultClientsResponseDto {
+export class DefaultCustomerResponseDto {
 
   @ApiResponseProperty()
     id: string

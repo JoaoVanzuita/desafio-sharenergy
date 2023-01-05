@@ -10,7 +10,6 @@ import { UsersService } from './users.service'
 
 @Controller('users')
 @ApiTags('Usuários')
-@ApiCookieAuth()
 export class UsersController {
   constructor(private readonly usersService: UsersService) { }
 
@@ -28,6 +27,7 @@ export class UsersController {
   }
 
   @Get('profile')
+  @ApiCookieAuth()
   @ApiExtraModels(DefaultUsersResponseDto)
   @ApiResponse({
     status: 200,

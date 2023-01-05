@@ -1,5 +1,5 @@
 export * from './GetHttpCat'
 export * from './GetRandomDog'
-export * from './ManageClients'
+export * from './ManageCustomers'
 export * from './RandomUsers'
-export * from './SaveClient'
+export * from './SaveCustomer'

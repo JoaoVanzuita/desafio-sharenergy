@@ -1,15 +1,15 @@
 import { Environment } from '../../../environment'
-import { TClient } from '../../../types'
+import { TCustomer } from '../../../types'
 import { Api } from '../axios-config'
 import { ResponseError } from '../axios-config/errors'
 
-export const createClient = async (client: TClient): Promise<TClient | ResponseError> => {
+export const updateCustomer = async (client: TCustomer): Promise<TCustomer | ResponseError> => {
 
   try {
-    const { data } = await Api.post('/clients', client)
+    const { data } = await Api.put(`customers/${client.id}`, client)
 
     return data
-  }catch(err){
+  } catch (err) {
 
     if (err instanceof ResponseError) {
       return err
