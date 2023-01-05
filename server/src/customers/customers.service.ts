@@ -37,7 +37,6 @@ export class CustomersService {
   async update(id: string, updateCustomerDto: CustomerDto): Promise<DefaultCustomerResponseDto> {
 
     return await this.customersRepository.update({ id }, updateCustomerDto)
-
   }
 
   async delete(id: string): Promise<DefaultCustomerResponseDto> {

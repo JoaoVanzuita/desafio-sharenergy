@@ -57,8 +57,6 @@ const body: CustomerDto = {
   }
 }
 
-const id = uuid()
-
 describe('CustomersController', () => {
   let customersController: CustomersController
   let customersService: CustomersService
@@ -127,6 +125,9 @@ describe('CustomersController', () => {
 
   describe('findOne', () => {
     it('should be able to get a customer', async () => {
+
+      const id = uuid()
+
       const result = await customersController.findOne(id)
 
       expect(result).toEqual(customersList[0])
@@ -136,28 +137,34 @@ describe('CustomersController', () => {
     it('should throw an exception', () => {
       jest.spyOn(customersService, 'findOne').mockRejectedValueOnce(new Error())
 
-      expect(customersController.findOne(id)).rejects.toThrowError()
+      expect(customersController.findOne('id')).rejects.toThrowError()
     })
   })
 
   describe('update', () => {
     it('should be able to update a customer', async () => {
+
+      const id = uuid()
+
       const result = await customersController.update(id, body)
 
       expect(result).toEqual(customersList[1])
       expect(customersService.update).toBeCalledWith(id, body)
     })
 
-    it('should not be able to update a customer', () => {
+    it('should throw an exception', () => {
       jest.spyOn(customersService, 'update').mockRejectedValueOnce(new Error())
 
-      expect(customersController.update(id, body)).rejects.toThrow()
+      expect(customersController.update('id', body)).rejects.toThrow()
     })
   })
 
   describe('delete', () => {
 
     it('should be able to delete a customer', async () => {
+
+      const id = uuid()
+
       const result = await customersController.delete(id)
 
       expect(result).toEqual(customersList[2])
@@ -168,7 +175,7 @@ describe('CustomersController', () => {
 
       jest.spyOn(customersService, 'delete').mockRejectedValueOnce(new Error())
 
-      expect(customersController.delete(id)).rejects.toThrow()
+      expect(customersController.delete('id')).rejects.toThrow()
     })
   })
 })

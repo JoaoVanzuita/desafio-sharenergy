@@ -9,7 +9,12 @@ export class CustomersRepository {
   constructor(@InjectModel(Customer.name) private customerModel: Model<CustomerDocument>) { }
 
   async findOne(filterQuery: FilterQuery<Customer>): Promise<Customer> {
-    return this.customerModel.findOne(filterQuery)
+
+    const result = await this.customerModel.findOne(filterQuery)
+
+    if(!result) throw new NotFoundException('Cliente não encontrado')
+
+    return result
   }
 
   async findWithFilters(name: string, page: number, results: number) {
@@ -36,12 +41,22 @@ export class CustomersRepository {
   }
 
   async update(filterQuery: FilterQuery<Customer>, customer: Partial<Customer>): Promise<Customer> {
+
+    const result = await this.customerModel.findOne(filterQuery)
+
+    if(!result) throw new NotFoundException('Cliente não encontrado')
+
     return this.customerModel.findOneAndUpdate(filterQuery, customer, {
       new: true
     })
   }
 
   async delete(filterQuery: FilterQuery<Customer>): Promise<Customer> {
+
+    const result = await this.customerModel.findOne(filterQuery)
+
+    if(!result) throw new NotFoundException('Cliente não encontrado')
+
     return this.customerModel.findByIdAndDelete(filterQuery)
   }
 }
