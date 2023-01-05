@@ -8,7 +8,7 @@ import { HttpCatsService } from './http-cats.service'
 @ApiTags('Http cats')
 @ApiCookieAuth()
 export class HttpCatsController {
-  constructor(private readonly catsService: HttpCatsService) { }
+  constructor(private readonly httpCatsService: HttpCatsService) { }
 
   @Get(':statusCode')
   @ApiOperation({
@@ -23,6 +23,6 @@ export class HttpCatsController {
   })
   getHttpCat(@Param('statusCode') statusCode: string) {
 
-    return this.catsService.getHttpCat(statusCode)
+    return this.httpCatsService.getHttpCat(statusCode)
   }
 }
