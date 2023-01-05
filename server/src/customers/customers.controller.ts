@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common'
-import { ApiCookieAuth, ApiExtraModels, ApiResponse, ApiTags, getSchemaPath } from '@nestjs/swagger'
+import { ApiCookieAuth, ApiExtraModels, ApiOperation, ApiResponse, ApiTags, getSchemaPath } from '@nestjs/swagger'
 
 import { CustomersService } from './customers.service'
 import { CustomerDto } from './dto/request/customer.dto'
@@ -14,6 +14,9 @@ export class CustomersController {
   constructor(private readonly customersService: CustomersService) { }
 
   @Post()
+  @ApiOperation({
+    summary: 'Criar um cliente'
+  })
   @ApiExtraModels(DefaultCustomerResponseDto)
   @ApiResponse({
     status: 201,
@@ -26,6 +29,9 @@ export class CustomersController {
   }
 
   @Get('search')
+  @ApiOperation({
+    summary: 'Pesquisa paginada de clientes por nome'
+  })
   @ApiExtraModels(FindWithFiltersResponseDto)
   @ApiResponse({
     status: 200,
@@ -40,6 +46,9 @@ export class CustomersController {
 
 
   @Get(':id')
+  @ApiOperation({
+    summary: 'Obter cliente por id'
+  })
   @ApiExtraModels(DefaultCustomerResponseDto)
   @ApiResponse({
     status: 200,
@@ -52,6 +61,9 @@ export class CustomersController {
   }
 
   @Put(':id')
+  @ApiOperation({
+    summary: 'Atualizar cliente por id'
+  })
   @ApiExtraModels(DefaultCustomerResponseDto)
   @ApiResponse({
     status: 200,
@@ -64,6 +76,9 @@ export class CustomersController {
   }
 
   @Delete(':id')
+  @ApiOperation({
+    summary: 'Deletar cliente por id'
+  })
   @ApiExtraModels(DefaultCustomerResponseDto)
   @ApiResponse({
     status: 200,

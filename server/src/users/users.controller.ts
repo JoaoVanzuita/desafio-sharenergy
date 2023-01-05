@@ -1,7 +1,7 @@
+import { CurrentUser } from '@auth/decorators/current-user.decorator'
+import { IsPublic } from '@auth/decorators/is-public.decorator'
 import { Body, Controller, Get, Post } from '@nestjs/common'
-import { ApiCookieAuth, ApiExtraModels, ApiResponse, ApiTags, getSchemaPath } from '@nestjs/swagger'
-import { CurrentUser } from 'src/auth/decorators/current-user.decorator'
-import { IsPublic } from 'src/auth/decorators/is-public.decorator'
+import { ApiCookieAuth, ApiExtraModels, ApiOperation, ApiResponse, ApiTags, getSchemaPath } from '@nestjs/swagger'
 
 import { CreateUserDto } from './dto/request/create-user.dto'
 import { DefaultUsersResponseDto } from './dto/response/default-users-response.dto'
@@ -15,6 +15,9 @@ export class UsersController {
 
   @Post()
   @IsPublic()
+  @ApiOperation({
+    summary: 'Criar um usuário'
+  })
   @ApiExtraModels(DefaultUsersResponseDto)
   @ApiResponse({
     status: 201,
@@ -28,6 +31,9 @@ export class UsersController {
 
   @Get('profile')
   @ApiCookieAuth()
+  @ApiOperation({
+    summary: 'Obter informações do usuário logado'
+  })
   @ApiExtraModels(DefaultUsersResponseDto)
   @ApiResponse({
     status: 200,

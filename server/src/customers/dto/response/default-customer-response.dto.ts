@@ -1,6 +1,6 @@
 import { ApiResponseProperty } from '@nestjs/swagger'
 
-class Address {
+class AddressResponseDto {
 
   @ApiResponseProperty()
     city: string
@@ -30,5 +30,5 @@ export class DefaultCustomerResponseDto {
     cpf: string
 
   @ApiResponseProperty()
-    address: Address
+    address: AddressResponseDto
 }

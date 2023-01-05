@@ -2,7 +2,7 @@ import { HttpException, Injectable } from '@nestjs/common'
 import axios from 'axios'
 import * as mime from 'mime-types'
 
-import { DefaultResponseDto } from './dto/response/default-response.dto'
+import { DefaultRandomDogsResponseDto } from './dto/response/default-random-dogs-response.dto'
 
 @Injectable()
 export class RandomDogsService {
@@ -11,7 +11,7 @@ export class RandomDogsService {
     baseURL: 'https://random.dog/woof'
   })
 
-  async getRandomDog(): Promise<DefaultResponseDto> {
+  async getRandomDog(): Promise<DefaultRandomDogsResponseDto> {
     try {
       const { data } = await this.api.get('')
 

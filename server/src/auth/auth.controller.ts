@@ -1,5 +1,5 @@
 import { Body, Controller, HttpCode, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common'
-import { ApiCookieAuth, ApiExtraModels, ApiResponse, ApiTags, getSchemaPath } from '@nestjs/swagger'
+import { ApiCookieAuth, ApiExtraModels, ApiOperation, ApiResponse, ApiTags, getSchemaPath } from '@nestjs/swagger'
 import { Response } from 'express'
 
 import { AuthService } from './auth.service'
@@ -18,6 +18,9 @@ export class AuthController {
   @IsPublic()
   @HttpCode(HttpStatus.OK)
   @UseGuards(LocalAuthGuard)
+  @ApiOperation({
+    summary: 'Efetuar login'
+  })
   @ApiExtraModels(LoginResponseDto)
   @ApiResponse({
     status: 200,
@@ -43,6 +46,9 @@ export class AuthController {
   @Post('logout')
   @ApiCookieAuth()
   @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiOperation({
+    summary: 'Efetuar logout'
+  })
   logout(@Res() res: Response) {
 
     return res.clearCookie('access_token', {

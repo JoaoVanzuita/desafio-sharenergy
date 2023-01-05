@@ -1,6 +1,6 @@
 import { ApiProperty, ApiResponseProperty } from '@nestjs/swagger'
 
-export class DefaultResponseDto {
+export class DefaultRandomDogsResponseDto {
 
   @ApiProperty()
     mediaType: string
