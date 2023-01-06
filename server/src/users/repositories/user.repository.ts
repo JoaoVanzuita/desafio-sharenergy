@@ -13,6 +13,7 @@ export class UsersRepository {
   }
 
   async findUserWithPass(filterQuery: FilterQuery<User>): Promise<User> {
+
     return await this.userModel.findOne(filterQuery).select('+password')
   }
 

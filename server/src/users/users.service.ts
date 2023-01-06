@@ -44,7 +44,12 @@ export class UsersService implements OnModuleInit {
   }
 
   async findUserWithPass(username: string): Promise<User> {
-    return await this.usersRepository.findUserWithPass({ username })
+
+    const result = await this.usersRepository.findUserWithPass({ username })
+
+    if(!result) throw new NotFoundException('Usuário não encontrado')
+
+    return result
   }
 
   async getProfile(id: string) {
