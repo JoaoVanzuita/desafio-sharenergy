@@ -4,24 +4,33 @@ services:
   sharenergy_client:
     container_name: sharenergy_client
     image: node:lts-alpine
+    networks:
+      sharenergy_network:
     volumes:
       - ./client:/app
     working_dir: /app
     command: sh -c "npm i && npm run start:dev"
     ports:
       - '5173:5173'
+    env_file:
+      - .env
     environment:
       - VITE_HASH_KEY=${VITE_HASH_KEY}
       - VITE_BASE_URL=${VITE_BASE_URL}
+
   sharenergy_server:
     container_name: sharenergy_server
     image: node:lts-alpine
+    networks:
+      sharenergy_network:
     volumes:
       - ./server:/app
     working_dir: /app
     command: sh -c "npm i && npm run start:dev"
     ports:
       - '8080:8080'
+    env_file:
+      - .env
     environment:
       - DEFAULT_USER_USERNAME=${DEFAULT_USER_USERNAME}
       - DEFAULT_USER_PASSWORD=${DEFAULT_USER_PASSWORD}
@@ -29,16 +38,26 @@ services:
       - JWT_SECRET=${JWT_SECRET}
     depends_on:
       - sharenergy_db
+
   sharenergy_db:
     container_name: sharenergy_db
     image: mongo
+    restart: always
+    networks:
+      sharenergy_network:
     volumes:
       - mongo-data:/data/db
     ports:
       - '27017:27017'
+    env_file:
+      - .env
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${ROOT_USERNAME}
       - MONGO_INITDB_ROOT_PASSWORD=${ROOT_PASSWORD}
       - MONGO_INITDB_DATABASE=${DATABASE}
 volumes:
   mongo-data: {}
+
+networks:
+  sharenergy_network:
+    name: sharenergy_network
