@@ -56,6 +56,8 @@ export const ManageClients = () => {
 
     if(result instanceof ResponseError ){
       showApiErrorAlert({message: result.message, alertBackground, alertColor})
+      setCustomers([])
+      setTotal(0)
       return
     }
 
